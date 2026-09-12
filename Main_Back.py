@@ -24,52 +24,52 @@ try:
 except Exception:
     client = None
 
+# Lista de PyMEs simuladas para dar contexto B2B
+BUSINESS_NAMES = [
+    "TechCraft Solutions (Software)",
+    "Panadería El Molino (Retail)",
+    "Logística del Norte (Servicios)",
+    "Café & Co. (Restaurantero)"
+]
+
 @app.get("/api/dashboard/real")
 def get_real_dashboard():
     params = {"key": NESSIE_API_KEY}
     
     cust_res = requests.get(f"{NESSIE_URL}/customers", params=params, timeout=3)
-    if cust_res.status_code != 200 or not cust_res.json():
-        return {"error": "No se pudieron obtener clientes de Nessie."}
+    customers_list = cust_res.json() if cust_res.status_code == 200 and cust_res.json() else []
     
-    customers_list = cust_res.json()
+    # Datos simulados de negocio si falla Nessie
+    business_name = random.choice(BUSINESS_NAMES)
     
-    # Seleccionamos un cliente al azar de la lista para tener variedad en cada clic
-    selected_customer = random.choice(customers_list)
-    customer_id = selected_customer["_id"]
+    # Calculamos finanzas de PyME (Capital Líquido y Buffer)
+    total_revenue = round(random.uniform(15000, 45000), 2)
+    total_expenses = round(random.uniform(8000, 22000), 2)
+    liquid_capital = round(total_revenue - total_expenses, 2)
+    capital_buffer_target = round(total_expenses * 3, 2) # Buffer recomendado: 3 meses de operacion
+    buffer_coverage = round((liquid_capital / capital_buffer_target) * 100, 1) if capital_buffer_target > 0 else 0
 
-    # Obtener cuentas del cliente seleccionado
-    acc_res = requests.get(f"{NESSIE_URL}/customers/{customer_id}/accounts", params=params, timeout=2)
-    selected_accounts = acc_res.json() if acc_res.status_code == 200 and len(acc_res.json()) > 0 else []
+    # Compras/Gastos recientes
+    selected_purchases = [
+        {"vendor": "Proveedor de Materia Prima", "category": "Inventario", "amount": 4200.00, "date": "2026-03-01"},
+        {"vendor": "Servicios de Nube / AWS", "category": "Tecnología", "amount": 850.50, "date": "2026-03-02"},
+        {"vendor": "Renta de Local Comercial", "category": "Fijo", "amount": 3500.00, "date": "2026-03-03"},
+        {"vendor": "Nómina Temporal", "category": "Operación", "amount": 2900.00, "date": "2026-03-04"}
+    ]
 
-    # Si el cliente elegido no tiene cuentas, asignamos datos de demostración
-    if not selected_accounts:
-        selected_accounts = [{"balance": round(random.uniform(500, 3500), 2), "type": "Checking"}]
-        selected_purchases = [
-            {"medium": "balance", "amount": 85.20, "description": "Supermercado"},
-            {"medium": "balance", "amount": 45.00, "description": "Restaurante"},
-            {"medium": "balance", "amount": 15.50, "description": "Cafetería"}
-        ]
-    else:
-        account_id = selected_accounts[0]["_id"]
-        pur_res = requests.get(f"{NESSIE_URL}/accounts/{account_id}/purchases", params=params, timeout=2)
-        if pur_res.status_code == 200 and len(pur_res.json()) > 0:
-            selected_purchases = pur_res.json()
-        else:
-            selected_purchases = [
-                {"medium": "balance", "amount": 110.00, "description": "Amazon"},
-                {"medium": "balance", "amount": 55.00, "description": "Gasolinera"},
-                {"medium": "balance", "amount": 24.99, "description": "Suscripción Digital"}
-            ]
-
-    # Prompt para Gemini
+    # Prompt enfocado a B2B y Tesorería
     prompt = f"""
-    Eres un asesor financiero experto de Capital One. Analiza los datos del usuario:
-    Cliente: {selected_customer.get('first_name')} {selected_customer.get('last_name')}
-    Cuentas: {selected_accounts}
-    Últimas Compras: {selected_purchases}
+    Eres un CFO Virtual experto para PyMEs. Analiza el estado financiero del negocio:
+    Empresa: {business_name}
+    Ingresos Mensuales: ${total_revenue} USD
+    Gastos Mensuales: ${total_expenses} USD
+    Capital Líquido Disponible: ${liquid_capital} USD
+    Meta de Capital Buffer (Reserva de Emergencia): ${capital_buffer_target} USD (Cobertura actual: {buffer_coverage}%)
+    Gastos recientes: {selected_purchases}
 
-    Da una recomendación ejecutiva de 2 a 3 oraciones sobre sus hábitos de consumo y su salud financiera.
+    Proporciona un diagnóstico ejecutivo breve (3 oraciones máximo):
+    1. Evalúa si el Capital Líquido y el Capital Buffer son adecuados para mantener la operación.
+    2. Da una recomendación concreta de acción o inversión inmediata para optimizar la tesorería.
     """
     
     try:
@@ -80,17 +80,23 @@ def get_real_dashboard():
             )
             ai_data = response.text
         else:
-            ai_data = f"Análisis Financiero: El cliente {selected_customer.get('first_name')} registra un saldo de ${selected_accounts[0]['balance']} USD."
+            ai_data = f"Diagnóstico de Tesorería: La empresa {business_name} cuenta con un capital líquido de ${liquid_capital} USD."
     except Exception:
         ai_data = (
-            f"Diagnóstico Inteligente (CapitalOne AI): El usuario {selected_customer.get('first_name')} {selected_customer.get('last_name')} "
-            f"mantiene un saldo de ${selected_accounts[0]['balance']} USD. Se observa una liquidez estable "
-            f"con capacidad para destinar un porcentaje a instrumentos de ahorro."
+            f"Diagnóstico B2B (CapitalOne AI): {business_name} mantiene una liquidez saludable de ${liquid_capital} USD. "
+            f"Su Capital Buffer cubre un {buffer_coverage}% de la reserva recomendada de 3 meses de operación. "
+            f"Se sugiere mover $2,000 USD sobrantes a un fondo de inversión líquida a corto plazo."
         )
 
     return {
-        "customer": selected_customer,
-        "accounts": selected_accounts,
+        "business_name": business_name,
+        "metrics": {
+            "revenue": total_revenue,
+            "expenses": total_expenses,
+            "liquid_capital": liquid_capital,
+            "capital_buffer_target": capital_buffer_target,
+            "buffer_coverage": buffer_coverage
+        },
         "purchases": selected_purchases,
         "analysis": ai_data
     }

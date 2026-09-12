@@ -1,6 +1,7 @@
 import os
 import random
 import requests
+from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from google import genai
@@ -24,81 +25,124 @@ try:
 except Exception:
     client = None
 
-# Lista de PyMEs simuladas para dar contexto B2B
-BUSINESS_NAMES = [
-    "TechCraft Solutions (Software)",
-    "Panadería El Molino (Retail)",
-    "Logística del Norte (Servicios)",
-    "Café & Co. (Restaurantero)"
+# Escenarios de prueba para el Fallback Dinámico
+DYNAMIC_FALLBACK_SCENARIOS = [
+    {
+        "merchant": "CryptoExchange_X",
+        "amount": 4850.00,
+        "location": "IP Inusual / Proxy Foreign (VPN)",
+        "type": "Transferencia de Alto Riesgo",
+        "is_fraud": True
+    },
+    {
+        "merchant": "Supermercado Local",
+        "amount": 42.50,
+        "location": "Terminal Física - León, MX",
+        "type": "Compra Habitual en Tienda",
+        "is_fraud": False
+    },
+    {
+        "merchant": "Electronics Store Online",
+        "amount": 1250.00,
+        "location": "IP Inusual (Lagos, NG)",
+        "type": "Compra e-Commerce Internacional",
+        "is_fraud": True
+    },
+    {
+        "merchant": "Gasolinera Pemex",
+        "amount": 35.00,
+        "location": "Terminal Física - León, MX",
+        "type": "Compra Habitual Gasolina",
+        "is_fraud": False
+    }
 ]
 
 @app.get("/api/dashboard/real")
-def get_real_dashboard():
+def get_security_sentinel():
     params = {"key": NESSIE_API_KEY}
     
-    cust_res = requests.get(f"{NESSIE_URL}/customers", params=params, timeout=3)
-    customers_list = cust_res.json() if cust_res.status_code == 200 and cust_res.json() else []
-    
-    # Datos simulados de negocio si falla Nessie
-    business_name = random.choice(BUSINESS_NAMES)
-    
-    # Calculamos finanzas de PyME (Capital Líquido y Buffer)
-    total_revenue = round(random.uniform(15000, 45000), 2)
-    total_expenses = round(random.uniform(8000, 22000), 2)
-    liquid_capital = round(total_revenue - total_expenses, 2)
-    capital_buffer_target = round(total_expenses * 3, 2) # Buffer recomendado: 3 meses de operacion
-    buffer_coverage = round((liquid_capital / capital_buffer_target) * 100, 1) if capital_buffer_target > 0 else 0
+    selected_customer = {"first_name": "Usuario", "last_name": "Demo", "_id": "demo_id"}
+    tx = None
+    data_source = "FALLBACK_GENERATOR"
 
-    # Compras/Gastos recientes
-    selected_purchases = [
-        {"vendor": "Proveedor de Materia Prima", "category": "Inventario", "amount": 4200.00, "date": "2026-03-01"},
-        {"vendor": "Servicios de Nube / AWS", "category": "Tecnología", "amount": 850.50, "date": "2026-03-02"},
-        {"vendor": "Renta de Local Comercial", "category": "Fijo", "amount": 3500.00, "date": "2026-03-03"},
-        {"vendor": "Nómina Temporal", "category": "Operación", "amount": 2900.00, "date": "2026-03-04"}
-    ]
+    # 1. Intentar consultar datos de Nessie API
+    try:
+        cust_res = requests.get(f"{NESSIE_URL}/customers", params=params, timeout=3)
+        if cust_res.status_code == 200 and cust_res.json():
+            customers_list = cust_res.json()
+            selected_customer = random.choice(customers_list)
+            customer_id = selected_customer.get("_id")
 
-    # Prompt enfocado a B2B y Tesorería
+            # Intentar obtener cuentas
+            acc_res = requests.get(f"{NESSIE_URL}/customers/{customer_id}/accounts", params=params, timeout=3)
+            if acc_res.status_code == 200 and acc_res.json():
+                accounts = acc_res.json()
+                account_id = accounts[0].get("_id")
+
+                # Intentar obtener compras reales
+                p_res = requests.get(f"{NESSIE_URL}/accounts/{account_id}/purchases", params=params, timeout=3)
+                if p_res.status_code == 200 and isinstance(p_res.json(), list) and len(p_res.json()) > 0:
+                    raw_tx = random.choice(p_res.json())
+                    tx = {
+                        "merchant": raw_tx.get("description", "Comercio Registrado"),
+                        "amount": float(raw_tx.get("amount", 100.0)),
+                        "location": f"Merchant ID: {raw_tx.get('merchant_id', 'N/A')}",
+                        "type": f"Estado: {raw_tx.get('status', 'completed')}"
+                    }
+                    data_source = "NESSIE_REAL_DATABASE"
+    except Exception as e:
+        print(f"Aviso: Fallo conexión Nessie, usando fallback. Error: {e}")
+
+    # 2. Si no había compras en Nessie o falló la API, activar el Fallback Dinámico
+    if not tx:
+        tx = random.choice(DYNAMIC_FALLBACK_SCENARIOS)
+
+    # 3. Prompt para Gemini 3.6 Flash
+    customer_name = f"{selected_customer.get('first_name')} {selected_customer.get('last_name')}"
     prompt = f"""
-    Eres un CFO Virtual experto para PyMEs. Analiza el estado financiero del negocio:
-    Empresa: {business_name}
-    Ingresos Mensuales: ${total_revenue} USD
-    Gastos Mensuales: ${total_expenses} USD
-    Capital Líquido Disponible: ${liquid_capital} USD
-    Meta de Capital Buffer (Reserva de Emergencia): ${capital_buffer_target} USD (Cobertura actual: {buffer_coverage}%)
-    Gastos recientes: {selected_purchases}
+    Eres un motor de Detección de Anomalías e Inteligencia de Amenazas Bancarias (SOC Sentinel).
+    Analiza la siguiente transacción en tiempo real:
 
-    Proporciona un diagnóstico ejecutivo breve (3 oraciones máximo):
-    1. Evalúa si el Capital Líquido y el Capital Buffer son adecuados para mantener la operación.
-    2. Da una recomendación concreta de acción o inversión inmediata para optimizar la tesorería.
+    Usuario: {customer_name} (ID: {selected_customer.get('_id')})
+    Comercio Target: {tx['merchant']}
+    Monto: ${tx['amount']} USD
+    Ubicación / Origen: {tx['location']}
+    Tipo de Operación: {tx['type']}
+
+    Responde ESTRICTAMENTE con esta estructura:
+    1. NIVEL DE RIESGO: [ALTO / MEDIO / BAJO]
+    2. SCORE DE RIESGO: [Número de 0 a 100]
+    3. ACCIÓN RECOMENDADA: [BLOQUEAR CUENTA / SOLICITAR 2FA / APROBAR]
+    4. ANÁLISIS DE ANOMALÍA: (Breve explicación técnica de 2 oraciones sobre por qué representa o no un riesgo).
     """
-    
+
+    # 4. Evaluación de Gemini
     try:
         if client:
             response = client.models.generate_content(
                 model='gemini-3.6-flash',
                 contents=prompt
             )
-            ai_data = response.text
+            ai_analysis = response.text
         else:
-            ai_data = f"Diagnóstico de Tesorería: La empresa {business_name} cuenta con un capital líquido de ${liquid_capital} USD."
-    except Exception:
-        ai_data = (
-            f"Diagnóstico B2B (CapitalOne AI): {business_name} mantiene una liquidez saludable de ${liquid_capital} USD. "
-            f"Su Capital Buffer cubre un {buffer_coverage}% de la reserva recomendada de 3 meses de operación. "
-            f"Se sugiere mover $2,000 USD sobrantes a un fondo de inversión líquida a corto plazo."
+            ai_analysis = "Error: Cliente Gemini no configurado."
+    except Exception as e:
+        # Fallback de respuesta de IA si falla la API key de Gemini
+        risk_level = "ALTO" if tx.get("amount", 0) > 500 else "BAJO"
+        score = 88 if risk_level == "ALTO" else 12
+        ai_analysis = (
+            f"NIVEL DE RIESGO: {risk_level}\n"
+            f"SCORE DE RIESGO: {score}/100\n"
+            f"ACCIÓN RECOMENDADA: {'SOLICITAR 2FA' if risk_level == 'ALTO' else 'APROBAR'}\n"
+            f"ANÁLISIS DE ANOMALÍA: Evaluación ejecutada en modo contingencia. Se detectó actividad para el usuario {customer_name} con monto de ${tx['amount']} USD."
         )
 
     return {
-        "business_name": business_name,
-        "metrics": {
-            "revenue": total_revenue,
-            "expenses": total_expenses,
-            "liquid_capital": liquid_capital,
-            "capital_buffer_target": capital_buffer_target,
-            "buffer_coverage": buffer_coverage
-        },
-        "purchases": selected_purchases,
-        "analysis": ai_data
+        "customer": customer_name,
+        "transaction": tx,
+        "data_source": data_source,
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "analysis": ai_analysis
     }
 
 if __name__ == "__main__":

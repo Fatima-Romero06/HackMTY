@@ -2,112 +2,78 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>NOMBRE DE PAGINA - Smart Treasury & Capital Buffer</title>
+  <title>CapitalU - Real-Time Security Sentinel</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js CDN para gráficas interactivas -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-100 p-8">
+<body class="bg-slate-950 text-slate-100 p-8">
 
-  <div class="max-w-6xl mx-auto space-y-6">
+  <div class="max-w-5xl mx-auto space-y-6">
     
-    <!-- Header B2B -->
-    <div class="flex justify-between items-center bg-slate-900 text-white p-6 rounded-xl shadow-lg border-b-4 border-blue-500">
+    <!-- Header Cyber -->
+    <div class="flex justify-between items-center bg-slate-900 p-6 rounded-xl border border-red-500/30 shadow-lg shadow-red-500/10">
       <div>
-        <h1 class="text-2xl font-bold flex items-center gap-2">
-          <span>🏢</span> NOMBRE DE PAGINA / Business Treasury Advisor
+        <h1 class="text-2xl font-bold flex items-center gap-2 text-red-500">
+          <span>🛡️</span> Security Sentinel & Anomaly Detection
         </h1>
-        <p class="text-slate-300 text-sm">Monitoreo de Capital Líquido, Reserva (Buffer) e Insights en Tiempo Real</p>
+        <p class="text-slate-400 text-sm">Monitoreo Antifraude en Tiempo Real - Capital One Network</p>
       </div>
-      <button onclick="fetchDashboard()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-lg font-semibold transition shadow-md flex items-center gap-2">
-        <span>🔄</span> Actualizar Análisis PyME
+      <button onclick="fetchSentinel()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-lg font-semibold transition shadow-md flex items-center gap-2">
+        <span>⚡</span> Simular Transacción En Vivo
       </button>
     </div>
 
-    <!-- Indicadores Claves (KPIs) -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div class="bg-white p-5 rounded-xl shadow border border-gray-200">
-        <p class="text-xs font-bold text-gray-400 uppercase">Empresa Seleccionada</p>
-        <p id="bizName" class="text-lg font-extrabold text-gray-800 mt-1">--</p>
-      </div>
-      <div class="bg-white p-5 rounded-xl shadow border border-gray-200">
-        <p class="text-xs font-bold text-emerald-600 uppercase">Capital Líquido</p>
-        <p id="liquidCap" class="text-xl font-black text-emerald-600 mt-1">$0.00 USD</p>
-      </div>
-      <div class="bg-white p-5 rounded-xl shadow border border-gray-200">
-        <p class="text-xs font-bold text-indigo-600 uppercase">Capital Buffer Objetivo</p>
-        <p id="bufferCap" class="text-xl font-black text-indigo-600 mt-1">$0.00 USD</p>
-      </div>
-      <div class="bg-white p-5 rounded-xl shadow border border-gray-200">
-        <p class="text-xs font-bold text-amber-600 uppercase">Cobertura Buffer</p>
-        <p id="bufferPercent" class="text-xl font-black text-amber-600 mt-1">0%</p>
-      </div>
-    </div>
-
-    <!-- Grid Principal: Gráfica + Diagnóstico AI -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Panel Principal -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       
-      <!-- Card Gráfica Financiera -->
-      <div class="bg-white p-6 rounded-xl shadow border border-gray-200">
-        <h2 class="text-gray-700 text-sm font-bold uppercase mb-4 flex items-center gap-2">
-          <span>📊</span> Balance Financiero Empresarial
-        </h2>
-        <div class="relative h-64">
-          <canvas id="financeChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Card Diagnóstico IA -->
-      <div class="bg-white p-6 rounded-xl shadow border border-gray-200 flex flex-col justify-between">
+      <!-- Detalle de la Transacción Encabezada -->
+      <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
+        <h2 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Transacción Entrante</h2>
         <div>
-          <h2 class="text-gray-700 text-sm font-bold uppercase mb-3 flex items-center gap-2">
-            <span>🧠</span> CFO Virtual - Diagnóstico Gemini IA
+          <p class="text-xs text-slate-500">Usuario</p>
+          <p id="targetUser" class="text-lg font-bold text-slate-200">--</p>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500">Comercio / Destino</p>
+          <p id="targetMerchant" class="text-base font-semibold text-slate-300">--</p>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500">Monto</p>
+          <p id="targetAmount" class="text-2xl font-black text-amber-400">$0.00 USD</p>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500">Ubicación / IP Origin</p>
+          <p id="targetLocation" class="text-xs font-mono text-slate-400">--</p>
+        </div>
+        <div class="pt-2 border-t border-slate-800">
+          <p class="text-xs text-slate-500">Timestamp</p>
+          <p id="targetTime" class="text-xs font-mono text-slate-400">--</p>
+        </div>
+      </div>
+
+      <!-- Análisis de Riesgo por IA -->
+      <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 md:col-span-2 flex flex-col justify-between">
+        <div>
+          <h2 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
+            <span>🧠</span> Diagnóstico SOC - Gemini Sentinel AI
           </h2>
-          <div id="aiOutput" class="text-gray-700 text-sm leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200">
-            Haz clic en "Actualizar Análisis PyME" para correr el modelo de tesorería empresarial.
-          </div>
+          <pre id="aiAnalysis" class="text-slate-200 text-sm leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800 whitespace-pre-wrap font-mono">
+Haz clic en "Simular Transacción En Vivo" para evaluar tráfico anómalo en tiempo real.
+          </pre>
         </div>
-        <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center text-xs text-gray-400">
-          <span>Motor: Gemini 3.6 Flash</span>
-          <span>Orquestación: FastAPI + Nessie</span>
+        <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500">
+          <span>Estatus: Motor Activo</span>
+          <span>FastAPI + Gemini 3.6 Flash</span>
         </div>
       </div>
 
-    </div>
-
-    <!-- Tabla de Egresos Recientes -->
-    <div class="bg-white p-6 rounded-xl shadow border border-gray-200">
-      <h2 class="text-gray-700 text-sm font-bold uppercase mb-4 flex items-center gap-2">
-        <span>💸</span> Registro de Egresos Operativos (Flujo de Salida)
-      </h2>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm text-gray-600">
-          <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
-            <tr>
-              <th class="py-3 px-4 rounded-l-lg">Proveedor / Comercio</th>
-              <th class="py-3 px-4">Categoría</th>
-              <th class="py-3 px-4">Fecha</th>
-              <th class="py-3 px-4 text-right rounded-r-lg">Monto</th>
-            </tr>
-          </thead>
-          <tbody id="purchasesTable">
-            <tr>
-              <td colspan="4" class="py-4 text-center text-gray-400">Sin egresos registrados.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
 
   </div>
 
   <script>
-    let myChart = null;
-
-    async function fetchDashboard() {
-      const output = document.getElementById('aiOutput');
-      const tableBody = document.getElementById('purchasesTable');
-      output.innerText = "Analizando estados financieros de la PyME y consultando CFO IA...";
+    async function fetchSentinel() {
+      const output = document.getElementById('aiAnalysis');
+      output.innerText = "Interceptando transacción... Evaluando patrones de fraude con Gemini...";
       
       try {
         const res = await fetch('http://127.0.0.1:8000/api/dashboard/real'); 
@@ -118,68 +84,19 @@
           return;
         }
 
-        // Actualizar KPIs
-        const m = data.metrics;
-        document.getElementById('bizName').innerText = data.business_name;
-        document.getElementById('liquidCap').innerText = `$${m.liquid_capital.toLocaleString()} USD`;
-        document.getElementById('bufferCap').innerText = `$${m.capital_buffer_target.toLocaleString()} USD`;
-        document.getElementById('bufferPercent').innerText = `${m.buffer_coverage}%`;
+        // Cargar datos
+        document.getElementById('targetUser').innerText = data.customer;
+        document.getElementById('targetMerchant').innerText = data.transaction.merchant;
+        document.getElementById('targetAmount').innerText = `$${data.transaction.amount} USD`;
+        document.getElementById('targetLocation').innerText = data.transaction.location;
+        document.getElementById('targetTime').innerText = data.timestamp;
 
-        // Actualizar IA Output
+        // Cargar evaluación IA
         output.innerText = data.analysis;
 
-        // Actualizar Tabla
-        tableBody.innerHTML = data.purchases.map(p => `
-          <tr class="border-b border-gray-100 hover:bg-gray-50">
-            <td class="py-3 px-4 font-semibold text-gray-800">${p.vendor}</td>
-            <td class="py-3 px-4"><span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">${p.category}</span></td>
-            <td class="py-3 px-4">${p.date}</td>
-            <td class="py-3 px-4 text-right font-bold text-red-600">-$${p.amount.toLocaleString()} USD</td>
-          </tr>
-        `).join('');
-
-        // Renderizar o Actualizar Gráfica
-        renderChart(m.revenue, m.expenses, m.liquid_capital, m.capital_buffer_target);
-
       } catch (err) {
-        output.innerText = "Error al conectar con el servidor backend: " + err;
+        output.innerText = "Error al conectar con el Sentinel Backend: " + err;
       }
-    }
-
-    function renderChart(revenue, expenses, liquid, buffer) {
-      const ctx = document.getElementById('financeChart').getContext('2d');
-      
-      if (myChart) {
-        myChart.destroy();
-      }
-
-      myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Ingresos', 'Gastos', 'Capital Líquido', 'Buffer Objetivo'],
-          datasets: [{
-            label: 'USD ($)',
-            data: [revenue, expenses, liquid, buffer],
-            backgroundColor: [
-              'rgba(16, 185, 129, 0.85)', // Emerald
-              'rgba(239, 68, 68, 0.85)',   // Red
-              'rgba(59, 130, 246, 0.85)',  // Blue
-              'rgba(99, 102, 241, 0.85)'   // Indigo
-            ],
-            borderRadius: 8
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
-          },
-          scales: {
-            y: { beginAtZero: true }
-          }
-        }
-      });
     }
   </script>
 </body>

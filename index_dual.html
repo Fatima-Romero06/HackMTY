@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>CapitalU - Real-Time Security Sentinel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 p-6 min-h-screen">
+
+  <div class="max-w-7xl mx-auto space-y-6">
+    
+    <!-- Header Principal -->
+    <div class="flex flex-col md:flex-row justify-between items-center bg-slate-900 p-5 rounded-2xl border border-red-500/30 shadow-xl shadow-red-500/10">
+      <div>
+        <h1 class="text-2xl font-black tracking-wide flex items-center gap-2 text-red-500">
+          <span>🛡️</span> CapitalU / Security Sentinel
+        </h1>
+        <p class="text-slate-400 text-xs mt-1">Monitoreo de Anomalías y Prevención de Fraude Bancario en Tiempo Real</p>
+      </div>
+      <button onclick="fetchSentinel()" class="mt-4 md:mt-0 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold px-6 py-3 rounded-xl transition-all transform active:scale-95 shadow-lg flex items-center gap-2">
+        <span>⚡</span> Simular Transacción En Vivo
+      </button>
+    </div>
+
+    <!-- Grid de Dos Columnas: App Móvil (Izq) + Dashboard SOC (Der) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- COLUMNA IZQUIERDA: Simulación de App Móvil (iPhone Frame) -->
+      <div class="lg:col-span-4 flex flex-col items-center">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1">
+          <span>📱</span> Vista Cliente (App Móvil)
+        </p>
+        
+        <!-- Frame de iPhone -->
+        <div class="w-80 h-[560px] bg-slate-900 border-4 border-slate-700 rounded-[45px] p-4 shadow-2xl relative overflow-hidden flex flex-col justify-between border-t-[10px]">
+          
+          <!-- Notch del teléfono -->
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-4 bg-slate-700 rounded-b-xl z-20"></div>
+
+          <!-- Encabezado de la App Móvil -->
+          <div class="pt-4 flex justify-between items-center text-xs text-slate-400 border-b border-slate-800 pb-2">
+            <span class="font-bold text-red-400">CapitalU Mobile</span>
+            <span id="phoneTime">12:00</span>
+          </div>
+
+          <!-- Pantalla principal de la App -->
+          <div class="flex-1 my-4 space-y-4 overflow-y-auto">
+            
+            <!-- Notificación Push de Alerta (Oculta por defecto, se activa dinámicamente) -->
+            <div id="pushNotification" class="bg-red-950/90 border border-red-500 text-white p-3 rounded-2xl shadow-xl space-y-2 transform transition-all duration-300">
+              <div class="flex items-center justify-between text-xs text-red-400 font-bold">
+                <span class="flex items-center gap-1">🚨 Alerta de Seguridad</span>
+                <span>Ahora</span>
+              </div>
+              <p class="text-xs font-semibold">Se intentó una compra sospechosa por <span id="pushAmount" class="text-amber-300 font-bold">$0.00</span>.</p>
+              <p class="text-[10px] text-slate-300" id="pushMerchant">Comercio: --</p>
+              
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <button onclick="respondPush(true)" class="bg-emerald-600 hover:bg-emerald-500 text-[10px] font-bold py-1.5 rounded-lg transition">Sí, fui yo</button>
+                <button onclick="respondPush(false)" class="bg-red-600 hover:bg-red-500 text-[10px] font-bold py-1.5 rounded-lg transition">Bloquear</button>
+              </div>
+            </div>
+
+            <!-- Dashboard básico del cliente -->
+            <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/50">
+              <p class="text-[10px] text-slate-400 uppercase font-bold">Saldo Disponible</p>
+              <p class="text-2xl font-black text-white mt-1">$14,250.00 <span class="text-xs font-normal text-slate-400">USD</span></p>
+            </div>
+
+            <div class="bg-slate-800/40 p-3 rounded-xl border border-slate-700/30">
+              <p class="text-[11px] font-bold text-slate-300 mb-2">Estado de Protección</p>
+              <div class="flex items-center gap-2 text-xs text-emerald-400">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Escudo Antifraude Activo</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Barra Inferior de navegación iPhone -->
+          <div class="w-28 h-1 bg-slate-600 rounded-full mx-auto mb-1"></div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: Consola de Ciberseguridad SOC -->
+      <div class="lg:col-span-8 space-y-6">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1">
+          <span>💻</span> Vista Analista (Centro de Operaciones SOC)
+        </p>
+
+        <!-- Tarjetas de Detalles técnicos de Transacción -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+            <p class="text-xs font-bold text-slate-500 uppercase">Tarjetahabiente</p>
+            <p id="socUser" class="text-base font-bold text-slate-200 mt-1">--</p>
+          </div>
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+            <p class="text-xs font-bold text-slate-500 uppercase">Comercio Target</p>
+            <p id="socMerchant" class="text-base font-bold text-slate-200 mt-1">--</p>
+          </div>
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+            <p class="text-xs font-bold text-slate-500 uppercase">Origen de Red / IP</p>
+            <p id="socLocation" class="text-xs font-mono text-amber-400 mt-1">--</p>
+          </div>
+        </div>
+
+        <!-- Consola AI Diagnóstico -->
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-slate-300 text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                <span>🧠</span> Motor Antifraude - Diagnóstico Gemini
+              </h2>
+              <span id="socStatusBadge" class="bg-slate-800 text-slate-400 text-[10px] font-mono px-2.5 py-1 rounded-full border border-slate-700">En Espera</span>
+            </div>
+
+            <pre id="socAnalysis" class="text-slate-200 text-sm leading-relaxed bg-slate-950 p-4 rounded-xl border border-slate-800/80 font-mono whitespace-pre-wrap min-h-[160px]">
+Presiona "Simular Transacción En Vivo" para poner a prueba el detector de anomalías.
+            </pre>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500">
+            <span>Orquestador: FastAPI + Nessie API</span>
+            <span>Inteligencia: Gemini 3.6 Flash</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Variables globales para mantener el saldo actual y el monto de la transacción activa
+    let currentBalance = 14250.00;
+    let currentTxAmount = 0.00;
+
+    async function fetchSentinel() {
+      const socAnalysis = document.getElementById('socAnalysis');
+      const socStatusBadge = document.getElementById('socStatusBadge');
+      
+      socAnalysis.innerText = "Interceptando paquete HTTP... Calculando vectores de riesgo con Gemini...";
+      socStatusBadge.innerText = "Analizando...";
+      socStatusBadge.className = "bg-amber-950 text-amber-400 text-[10px] font-mono px-2.5 py-1 rounded-full border border-amber-800 animate-pulse";
+
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/dashboard/real');
+        const data = await res.json();
+
+        if (data.error) {
+          socAnalysis.innerText = data.error;
+          return;
+        }
+
+        // Guardar el monto de la transacción actual
+        currentTxAmount = parseFloat(data.transaction.amount) || 0.00;
+
+        // 1. Actualizar Consola SOC
+        document.getElementById('socUser').innerText = data.customer;
+        document.getElementById('socMerchant').innerText = data.transaction.merchant;
+        document.getElementById('socLocation').innerText = data.transaction.location;
+        socAnalysis.innerText = data.analysis;
+
+        // 2. Actualizar Notificación en el iPhone
+        document.getElementById('pushAmount').innerText = `$${currentTxAmount.toLocaleString('en-US', {minimumFractionDigits: 2})} USD`;
+        document.getElementById('pushMerchant').innerText = `Comercio: ${data.transaction.merchant}`;
+        
+        // Formatear reloj del iPhone
+        const now = new Date();
+        document.getElementById('phoneTime').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        // Actualizar Badge de Estado
+        if (data.analysis.includes("ALTO")) {
+          socStatusBadge.innerText = "ALERTA CRÍTICA";
+          socStatusBadge.className = "bg-red-950 text-red-400 text-[10px] font-mono px-2.5 py-1 rounded-full border border-red-800 font-bold";
+        } else {
+          socStatusBadge.innerText = "RIESGO NORMAL";
+          socStatusBadge.className = "bg-emerald-950 text-emerald-400 text-[10px] font-mono px-2.5 py-1 rounded-full border border-emerald-800 font-bold";
+        }
+
+      } catch (err) {
+        socAnalysis.innerText = "Error al conectar con la consola de ciberseguridad: " + err;
+      }
+    }
+
+    // Respuesta a la notificación del cliente
+    function respondPush(approved) {
+      const socAnalysis = document.getElementById('socAnalysis');
+      const socStatusBadge = document.getElementById('socStatusBadge');
+
+      if (approved) {
+        // Verificar si hay saldo suficiente y descontar
+        if (currentTxAmount > 0) {
+          if (currentBalance >= currentTxAmount) {
+            currentBalance -= currentTxAmount;
+            
+            // Actualizar el saldo visualmente en la pantalla del iPhone
+            const formattedBalance = currentBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.querySelector('#pushNotification').nextElementSibling.querySelector('p.text-2xl').innerHTML = 
+              `$${formattedBalance} <span class="text-xs font-normal text-slate-400">USD</span>`;
+            
+            socStatusBadge.innerText = "AUTORIZADO Y COBRADO";
+            socStatusBadge.className = "bg-emerald-950 text-emerald-400 text-[10px] font-mono px-2.5 py-1 rounded-full border border-emerald-800 font-bold";
+            
+            socAnalysis.innerText += `\n\n--------------------------------------------------\n[RESOLUCIÓN CLIENTE]: Transacción CONFIRMADA por el usuario.\n[PROCESAMIENTO]: Cobro aplicado por $${currentTxAmount.toFixed(2)} USD. Saldo actualizado a $${formattedBalance} USD.`;
+            
+            // Reiniciar el monto de la transacción activa para evitar cobros dobles
+            currentTxAmount = 0.00;
+          } else {
+            alert("Fondos insuficientes para procesar la transacción.");
+          }
+        } else {
+          alert("No hay ninguna transacción pendiente para confirmar o ya fue procesada.");
+        }
+
+      } else {
+        socStatusBadge.innerText = "BLOQUEADO / FRAUDE REPORTE";
+        socStatusBadge.className = "bg-red-950 text-red-400 text-[10px] font-mono px-2.5 py-1 rounded-full border border-red-800 font-bold animate-pulse";
+        
+        socAnalysis.innerText += "\n\n--------------------------------------------------\n[RESOLUCIÓN CLIENTE]: El usuario RECHAZÓ la transacción desde la App Móvil.\nACCIÓN AUTOMÁTICA: Tarjeta congelada de inmediato, credenciales invalidadas y ticket de investigación de fraude abierto en el SOC.";
+        
+        // Reiniciar el monto de la transacción activa
+        currentTxAmount = 0.00;
+      }
+    }
+  </script>
+</body>
+</html>

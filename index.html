@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Capital aid AI Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+
+  <div class="max-w-4xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center bg-blue-900 text-white p-6 rounded-xl shadow-lg">
+      <div>
+        <h1 class="text-2xl font-bold">CapitlAID / Financial Advisor</h1>
+        <p class="text-blue-200 text-sm">Orquestación de Datos en Tiempo Real</p>
+      </div>
+      <button onclick="fetchDashboard()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold transition">
+        Cargar Cliente
+      </button>
+    </div>
+
+    <!-- Panel Superior -->
+    <div id="content" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Card 1: Perfil de Usuario -->
+      <div class="bg-white p-6 rounded-xl shadow border border-gray-200">
+        <h2 class="text-gray-500 text-sm font-bold uppercase">Usuario</h2>
+        <p id="userName" class="text-xl font-bold text-gray-800 mt-2">--</p>
+        <p id="userAccount" class="text-gray-600 text-sm mt-1">Saldo: --</p>
+      </div>
+
+      <!-- Card 2: Diagnóstico IA -->
+      <div class="bg-white p-6 rounded-xl shadow border border-gray-200 col-span-2">
+        <h2 class="text-gray-500 text-sm font-bold uppercase">Diagnóstico Gemini IA</h2>
+        <div id="aiOutput" class="mt-2 text-gray-700 text-sm leading-relaxed bg-gray-50 p-4 rounded-lg">
+          Haz clic en "Cargar Cliente" para consultar la API de Capital One y procesar con Gemini.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Panel Inferior: Tabla de Compras -->
+    <div class="bg-white p-6 rounded-xl shadow border border-gray-200">
+      <h2 class="text-gray-500 text-sm font-bold uppercase mb-4">Últimos Movimientos (Nessie API)</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-600">
+          <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+            <tr>
+              <th class="py-3 px-4 rounded-l-lg">Descripción / Comercio</th>
+              <th class="py-3 px-4">Medio de Pago</th>
+              <th class="py-3 px-4 text-right rounded-r-lg">Monto (USD)</th>
+            </tr>
+          </thead>
+          <tbody id="purchasesTable">
+            <tr>
+              <td colspan="3" class="py-4 text-center text-gray-400">Sin transacciones cargadas.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    async function fetchDashboard() {
+      const output = document.getElementById('aiOutput');
+      const tableBody = document.getElementById('purchasesTable');
+      output.innerText = "Consultando datos de Nessie API y analizando con IA...";
+      tableBody.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-gray-400">Cargando movimientos...</td></tr>`;
+      
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/dashboard/real'); 
+        const data = await res.json();
+        
+        if (data.error) {
+          output.innerText = data.error;
+          return;
+        }
+        
+        // Cargar datos de usuario
+        const firstName = data.customer.first_name;
+        const lastName = data.customer.last_name;
+        document.getElementById('userName').innerText = `${firstName} ${lastName}`;
+        
+        if (data.accounts && data.accounts.length > 0) {
+          document.getElementById('userAccount').innerText = `Saldo Real: $${data.accounts[0].balance} USD (${data.accounts[0].type})`;
+        } else {
+          document.getElementById('userAccount').innerText = "Sin cuentas registradas";
+        }
+
+        // Cargar Diagnóstico IA
+        output.innerText = typeof data.analysis === 'string' ? data.analysis : JSON.stringify(data.analysis, null, 2);
+
+        // Renderizar tabla de compras
+        if (data.purchases && data.purchases.length > 0) {
+          tableBody.innerHTML = data.purchases.map(p => `
+            <tr class="border-b border-gray-100 hover:bg-gray-50">
+              <td class="py-3 px-4 font-semibold text-gray-800">${p.description || 'Compra Comercial'}</td>
+              <td class="py-3 px-4 capitalize">${p.medium || 'Balance'}</td>
+              <td class="py-3 px-4 text-right font-bold text-red-600">-$${p.amount} USD</td>
+            </tr>
+          `).join('');
+        } else {
+          tableBody.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-gray-400">No se encontraron movimientos recientes.</td></tr>`;
+        }
+
+      } catch (err) {
+        output.innerText = "Error al conectar con el servidor backend: " + err;
+      }
+    }
+  </script>
+</body>
+</html> 

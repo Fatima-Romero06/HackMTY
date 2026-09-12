@@ -18,6 +18,10 @@ VerifiKa is a smart platform to detect risks and protect your cash flow with jus
 
 ## The problem
 
+
+About 45% of SMEs in Mexico suffer financial fraud primarily in the areas of purchasing and payments to suppliers due to overbilling and fraudulent suppliers (KPGM, 2025). Operating with manual processes and without real-time monitoring of abnormal activity, these companies fail to detect these capital leaks in time, absorbing invisible financial losses that directly compromise their liquidity and reduce their chances of survival in their first five years. 
+
 ---
 
 ## Our solution
+

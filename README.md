@@ -43,5 +43,37 @@ Approximately 45% of SMEs in Mexico suffer financial fraud due to overbilling an
 
 5. Gemini AI Copilot & Shield Dashboard: Analyzes historical behavior, generates custom security reports, and gives SMEs direct control over rules and access levels.
 
+---
+
+## User Journey Map
+
+VerifiKa creates a seamless interaction between commercial banks and SME users across five critical stages:
 
 
+| Stage | 1. Acquisition & Contracting | 2. Onboarding & Config | 3. Daily Operations | 4. Detection & Escrow | 5. Analysis & Monetization |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Bank Action** | Integrates VerifiKa API into its corporate banking platform (*White-Label*). | Deploys *Security Plus* module to SME digital banking accounts. | Passively monitors SPEI transactions without disrupting core rails. | Intercepts high-risk transfers ($\text{Score} \ge 50$) via **Ghost Escrow Vault**. | Collects recurring subscription revenue ($15/mo net margin per SME). |
+| **SME Action** | Activates *VerifiKa Shield* directly within the bank’s mobile app. | Sets up team roles, spending rules, and registers Face ID biometrics. | Executes daily SPEI transfers, vendor payouts, and routine payroll. | Receives real-time risk alert; authorizes flagged transfer with Face ID. | Reviews financial security reports and interacts with **Gemini AI Copilot**. |
+| **Touchpoint** | Portal / Executive Account Mgr. | App Onboarding / Biometric Setup | Mobile Banking App (Native) | Interactive Push Notification / Vault | Financial Health Dashboard |
+| **Pain Point Solved** | Eliminates 18-month internal builds and heavy infrastructure costs. | Replaces complex security setups with a 2-minute guided onboarding. | Eliminates transaction delays and false-positive account blocks. | Resolves suspicious activity automatically without call center friction. | Turns cybersecurity into a profit center for the bank while protecting SME liquidity. |
+| **Tech / AI Engine** | RESTful API & Webhook Handshake | Initial Gemini baseline model training on historical rules | Real-time heuristic scoring (amounts, hours, patterns) | Dynamic Risk Engine + Device-native Biometric API | Adaptive memory logging & predictive fraud analytics |
+
+
+## Key Journey Highlights
+
+* **For the Bank:** Transforms fraud protection from a costly operational burden (*OpEx*) into a net-income asset, automating 100% of incident resolutions without increasing support desk headcount.
+* **For the SME:** Protects working capital in real time with zero-friction daily operations, ensuring flagged payments enter a temporary 24-hour review vault rather than facing flat, disruptive rejections.
+
+---
+
+## Core features
+
+
+VerifiKa extends native commercial banking applications through four core integrated pillars:
+
+| Feature Pillar | Technical Description | SME Value | Bank Benefit |
+| :--- | :--- | :--- | :--- |
+| **Native Banking Integration** | Embedded extension (SentinelGuard Copilot) seamlessly integrated into existing mobile banking rails (e.g., BanBajío) via APIs. | Zero-friction security protection without installing third-party apps. | Rapid 4-6 week API deployment without modifying core transaccional infrastructure. |
+| **Multi-Factor Biometric Auth** | Secondary authorization layer using device-native biometrics (Face ID/Fingerprint) and 4-character dynamic security PINs. | Instant verification for high-value or flagged transfers with zero operational friction. | Eliminates identity theft and credential compromise risks for corporate accounts. |
+| **Gemini Predictive Learning** | AI engine analyzing historical financial behavior, transaction patterns, and customized company budgets. | Interactive AI Copilot auditing operational leaks and unusual transfers in real time. | Drastically reduces false positives by learning legitimate business payment habits. |
+| **Custom Security Metrics & Alerts** | Real-time risk scoring engine (Risk Score 0–100) coupled with **Ghost Escrow** 24-hour retention and custom alerts. | Complete control and immediate visibility over operational risk and held funds. | Automates 100% of incident resolutions, eliminating support call center burden. |

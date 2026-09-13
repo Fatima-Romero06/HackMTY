@@ -25,7 +25,7 @@ About 45% of SMEs in Mexico suffer financial fraud primarily in the areas of pur
 
 ## Our solution
 
-VerifiKa is a transactional control platform for SMEs that integrates the Capital One API with the Gemini AI engine (SentinelGuard). The system monitors the business's spending history in the background and, upon detecting anomalous or high-risk transactions, automatically stops and holds the payment in secure custody. Through AI-generated explanations and biometric validation required from the owner, the platform eliminates the risk of fraud and unauthorized purchases in real time.
+Approximately 45% of SMEs in Mexico suffer financial fraud due to overbilling and fraudulent suppliers (KPMG, 2025). Operating with processes that lack real-time monitoring of anomalous activities, these companies fail to detect these capital leaks in time, absorbing invisible financial losses that directly compromise their liquidity and reduce their chances of survival during their first five years. Who does an SME turn to when it loses money? Its bank.
 
 ---
 
@@ -33,12 +33,15 @@ VerifiKa is a transactional control platform for SMEs that integrates the Capita
 
 <strong>Substantiated Competitive Differentiation</strong>
 
-1. Traditional banking solutions and conventional ERPs operate under static, conditional rules (rigid limits on amounts or locations). This generates a high rate of false positives that block legitimate SME transactions or, conversely, allow high-speed micro-transfers and unusual merchant hops designed to bypass filters to pass through.
+VerifiKa serves as an intelligent cybersecurity extension within the bank's mobile app:
 
-2. VerifiKa differentiates itself by using a dynamic stochastic model powered by Gemini AI, which learns the seasonality and historical transactional behavior of each SME. Instead of blocking the account entirely or allowing the expense to pass, it introduces the Ghost Escrow mechanism: the intelligent and proactive hold of suspicious funds in real time with a natural language explanation for the owner.
+Heuristic Risk Engine: Evaluates transaction risk in real time based on timing, amounts, and frequency patterns.
 
-<strong>Market Gap</strong>
+Escrow Vault: Intercepts suspicious transactions and holds funds temporarily for review instead of triggering immediate, disruptive rejections.
 
+Multi-Factor Authentication: Requires biometric confirmation and individual user access codes to authorize flagged movements.
+
+Gemini AI Copilot & Shield Dashboard: Analyzes historical behavior, generates custom security reports, and gives SMEs direct control over rules and access levels.
 
 
 

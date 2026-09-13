@@ -71,9 +71,9 @@ VerifiKa creates a seamless interaction between commercial banks and SME users a
 
 VerifiKa extends native commercial banking applications through four core integrated pillars:
 
-| Feature Pillar | Technical Description | SME Value | Bank Benefit |
+| Feature Pillar | Description | SME Benefit | Bank Benefit |
 | :--- | :--- | :--- | :--- |
-| **Native Banking Integration** | Embedded extension (SentinelGuard Copilot) seamlessly integrated into existing mobile banking rails (e.g., BanBajío) via APIs. | Zero-friction security protection without installing third-party apps. | Rapid 4-6 week API deployment without modifying core transaccional infrastructure. |
-| **Multi-Factor Biometric Auth** | Secondary authorization layer using device-native biometrics (Face ID/Fingerprint) and 4-character dynamic security PINs. | Instant verification for high-value or flagged transfers with zero operational friction. | Eliminates identity theft and credential compromise risks for corporate accounts. |
-| **Gemini Predictive Learning** | AI engine analyzing historical financial behavior, transaction patterns, and customized company budgets. | Interactive AI Copilot auditing operational leaks and unusual transfers in real time. | Drastically reduces false positives by learning legitimate business payment habits. |
-| **Custom Security Metrics & Alerts** | Real-time risk scoring engine (Risk Score 0–100) coupled with **Ghost Escrow** 24-hour retention and custom alerts. | Complete control and immediate visibility over operational risk and held funds. | Automates 100% of incident resolutions, eliminating support call center burden. |
+| ** Native Integration** | Embedded white-label extension via RESTful APIs. | No third-party apps needed. | Fast 4-6 week integration without core changes. |
+| ** Biometric Auth** | Device-native Face ID & dynamic 4-pin security. | Instant approval for flagged transfers. | Eliminates identity theft and credential leaks. |
+| ** Gemini AI Engine** | Self-learning behavioral model tracking company budgets. | Audits operational leaks in real time. | Drastically reduces false-positive alerts. |
+| ** Ghost Escrow Vault** | Real-time Risk Score (0-100) & 24h retention vault. | Immediate control over held funds. | 100% automated resolution; zero call-center burden. |

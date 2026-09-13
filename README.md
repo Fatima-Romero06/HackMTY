@@ -29,7 +29,7 @@ Approximately 45% of SMEs in Mexico suffer financial fraud due to overbilling an
 
 ---
 
-## What makes us different
+## Protoype differentiation
 
 <strong>Substantiated Competitive Differentiation</strong>
 

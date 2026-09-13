@@ -24,3 +24,10 @@ Based on the final score (0 to 100), the system takes one of three actions:
 Low Risk (Under 50): Everything looks good. The transfer goes through immediately, and the activity is logged.
 Medium Risk (50 to 75): The transfer is paused. The user must enter a 4-digit code or scan their face/fingerprint to confirm it's really them.
 High Risk (Over 75): The transfer is completely stopped. The money is placed in a safe 24-hour temporary hold (escrow) until a manager approves it, extra signatures are provided, or the request is canceled.
+
+What did we use?
+
+We used two main APIs: Gemini´s API and Capital One´s ¨Nessie is real¨ API, which act as the base for the interactive model and the data base from which our extension pulls info from for the simulation.
+
+Everything was made with simplicity and efficiency in mind, that is why we primarily used HTTML, CSS and JavaScript for the frontend, because they are the most common, mainstreamm easy to use and more accesible lengauges, unlike swift and react that are more centered arund a certain type of app design.
+For the backend, while the app itself does not directly use the Main backend on this documentation, we left it just in case we want to expand to other types of desing, that file enables us to prove and better shown the APIS´s used and set the groundwork for further expansion.

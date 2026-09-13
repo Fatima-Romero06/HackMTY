@@ -1,20 +1,26 @@
-System and logic overview
+System & Logic Overview
 
-Our program operates as a client-side web extension that functions as an interception layer between the web UI of the commercial banking portal, in this case, between BanBajio and the core banking endpoints like the Nessie API. 
-The architecture consists of four primary software modules: the DOM Data Capture Engine, the Heuristic Evaluation Module, the Step-Up Authentication Engine, and the Audit Ledger Subsystem.
+Our system works as a protective layer built right into the banking web page (like BanBajío) that checks money transfers before they leave the account. It acts like a digital security guard standing between the user and the bank's transaction systems.
 
-When an operator triggers a transaction form submission, the DOM Data Capture Engine intercepts the raw payload prior to network transmission, extracting metadata such as origin account, beneficiary entity, transaction amount, timestamp, and destination category. 
-This payload is passed synchronously to the Heuristic Evaluation Module. Depending on the computed threat level, the Step-Up Authentication Engine conditionally interrupts the execution flow, either enforcing 2FA/biometric verification or diverting the transaction into a temporary 24-hour preventive escrow holding state within the banking core. All evaluation outcomes, parameter vectors, and operator decision trails are logged locally and transmitted to the Audit Ledger Subsystem.
+The system is made up of four simple parts:
 
-Algorithmic Logic & Risk Scoring Engine operations:
+Information Capture Tool: Reads the details of a transfer (who is sending it, who receives it, how much, and what time) the moment the "Send" button is clicked.
 
-The core evaluation mechanism utilizes a weighted additive threat model that computes a composite numerical score ranging from 0 to 100 for each incoming transaction payload. 
-The pipeline initializes every transfer at a baseline score of +10. It then processes the payload through five deterministic constraint filters: maximum amount limits, high-risk destination categories (such as crypto exchanges or offshore trusts), curfew time windows (typically 01:00 AM to 05:00 AM), and velocity burst detection.
-The velocity filter evaluates a trailing 60-second sliding window of previous execution timestamps to detect automated high-frequency bot behavior.
+Risk Checker: Analyzes those details instantly to calculate how safe or dangerous the transfer looks.
+Verification Security Guard: Pauses suspicious transfers to ask for extra safety checks (like a security code or Face ID) or puts the money on hold.
+Activity Log: Keeps a complete record of every transfer attempt, security decision, and user action for safety records.
 
-The evaluation pipeline routes execution through three deterministic action thresholds based on the final computed risk score:
+How the Risk System Works
 
-Low risk, under 50. The transaction bypasses additional verification. The network request proceeds directly to the core banking SPEI settlement API, and the event is written to the audit log as approved.
-Medium risk between 50-75. The runtime halts the outgoing API request and mounts a Step-Up Authentication modal. The user must successfully pass dynamic 4-character token validation or biometric identification before the network request is released.
-High Risk, over 75. The request execution is completely intercepted. The system restricts immediate execution, prompting an administrative review that forces the funds into an Escrow Holding state, requires multi-signatory authorization, or cancels the payload outright.
+Every single transfer starts with a basic safety score of 10 out of 100. The system then checks five red-flag rules and adds risk points if a rule is triggered:
+Large Amount: The transfer is above normal account limits.
+High-Risk Recipient: Sending money to risky destinations like cryptocurrency exchanges or offshore accounts.
+Odd Hours: Transfers made late at night (usually between 1:00 AM and 5:00 AM).
+Rapid Transfers: Sending multiple transfers within a few seconds (a classic sign of automated hacker bots).
 
+What Happens Next?
+
+Based on the final score (0 to 100), the system takes one of three actions:
+Low Risk (Under 50): Everything looks good. The transfer goes through immediately, and the activity is logged.
+Medium Risk (50 to 75): The transfer is paused. The user must enter a 4-digit code or scan their face/fingerprint to confirm it's really them.
+High Risk (Over 75): The transfer is completely stopped. The money is placed in a safe 24-hour temporary hold (escrow) until a manager approves it, extra signatures are provided, or the request is canceled.

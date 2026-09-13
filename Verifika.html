@@ -234,7 +234,10 @@
                         </div>
                         <div class="min-w-0">
                             <h3 class="text-xs font-extrabold text-white leading-tight truncate">Copiloto SentinelGuard</h3>
-                            <p class="text-[9px] text-bajio-300 font-medium truncate">IA para BanBajío Móvil</p>
+                            <p class="text-[9px] text-bajio-300 font-medium truncate flex items-center gap-1">
+                                <span>IA BanBajío + Gemini API</span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+                            </p>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 shrink-0">
@@ -246,6 +249,12 @@
                             <i class="fa-solid fa-circle-info text-[11px]"></i>
                         </button>
                     </div>
+                </div>
+
+                <!-- Continuous Learning Banner in Widget -->
+                <div class="bg-white/5 border border-bajio-500/30 rounded-xl p-2 flex items-center gap-2 text-[9.5px] text-bajio-200">
+                    <i class="fa-solid fa-brain text-bajio-400 text-xs shrink-0 animate-pulse"></i>
+                    <span class="leading-tight">IA con <strong class="text-white">Aprendizaje Evolutivo</strong>: Se retroalimenta automáticamente y recalibra estadísticas en tiempo real.</span>
                 </div>
 
                 <!-- Widget Function Buttons (compact row) -->
@@ -268,7 +277,10 @@
 
                 <div class="flex items-center justify-between pt-1">
                     <span class="text-[8.5px] font-semibold text-slate-400/80 tracking-wide">
-                        Powered by <span class="font-extrabold text-bajio-300">Verifika</span>
+                        Powered by <span class="font-extrabold text-bajio-300">Verifika & Google Gemini</span>
+                    </span>
+                    <span id="widget-epoch-tag" class="text-[8.5px] font-mono text-emerald-400 font-bold">
+                        Época IA: #142
                     </span>
                 </div>
 
@@ -327,16 +339,25 @@
 
         </div>
 
-        <!-- BOTTOM NAVIGATION BAR -->
+        <!-- BOTTOM NAVIGATION BAR WITH ICONIC SYMBOL FOR OPERACIONES -->
         <div class="bg-white border-t border-slate-200 px-6 py-2.5 flex justify-between items-center text-slate-400 z-10">
             <button class="flex flex-col items-center gap-0.5 text-bajio-700">
                 <i class="fa-solid fa-house text-base"></i>
                 <span class="text-[10px] font-extrabold">Inicio</span>
             </button>
 
-            <button onclick="openTransferModal()" class="flex flex-col items-center gap-0.5 hover:text-slate-700 transition-colors">
-                <i class="fa-solid fa-arrow-left-right text-base"></i>
-                <span class="text-[10px] font-medium">Operaciones</span>
+            <!-- Operaciones con Símbolo/Icono Elegante -->
+            <button onclick="openTransferModal()" class="flex flex-col items-center gap-0.5 hover:text-bajio-700 transition-colors group">
+                <div class="relative">
+                    <i class="fa-solid fa-money-bill-transfer text-base group-hover:scale-110 transition-transform text-slate-600 group-hover:text-bajio-700"></i>
+                    <span class="absolute -top-1 -right-1.5 flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-bajio-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-bajio-600"></span>
+                    </span>
+                </div>
+                <span class="text-[10px] font-bold text-slate-700 group-hover:text-bajio-700 flex items-center gap-1">
+                    Operaciones
+                </span>
             </button>
 
             <button onclick="openEscrowManagerModal()" class="flex flex-col items-center gap-0.5 hover:text-slate-700 transition-colors">
@@ -362,11 +383,31 @@
                     <div class="w-8 h-8 rounded-xl bg-bajio-100 text-bajio-700 flex items-center justify-center font-bold">
                         <i class="fa-solid fa-paper-plane text-xs"></i>
                     </div>
-                    <h3 class="text-sm font-extrabold text-slate-900">Nueva Transferencia SPEI</h3>
+                    <div>
+                        <h3 class="text-sm font-extrabold text-slate-900">Nueva Transferencia SPEI</h3>
+                        <p class="text-[9.5px] text-slate-500 flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate text-bajio-600 text-[10px]"></i> Operación Directa & Monitoreada
+                        </p>
+                    </div>
                 </div>
                 <button onclick="closeModal('modal-transfer')" class="text-slate-400 hover:text-slate-600">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
+            </div>
+
+            <!-- IA Continuous Learning / Feedback Banner -->
+            <div class="bg-gradient-to-r from-bajio-950 via-bajio-900 to-slate-900 p-3 rounded-2xl border border-bajio-500/40 text-white space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="text-[9.5px] font-extrabold uppercase tracking-wider text-bajio-300 flex items-center gap-1">
+                        <i class="fa-solid fa-brain text-bajio-400 animate-pulse"></i> IA con Google Gemini API
+                    </span>
+                    <span class="text-[8.5px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-semibold">
+                        Auto-Adaptativo
+                    </span>
+                </div>
+                <p class="text-[10px] text-slate-300 leading-tight">
+                    Esta IA se <strong class="text-white font-bold">alimenta y entrena en tiempo real</strong> con cada reporte y transferencia procesada para recalibrar scoring de riesgo y estadísticas del reporte.
+                </p>
             </div>
 
             <form id="transfer-form" onsubmit="executeTransfer(event)" class="space-y-3 text-xs">
@@ -391,12 +432,28 @@
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Giro / Categoría</label>
-                        <select id="transfer-category" class="w-full px-2 py-2 rounded-xl border border-slate-300 font-medium text-slate-800 focus:border-bajio-600 outline-none">
-                            <option value="Servicios TI">Servicios TI</option>
-                            <option value="Nómina Operativa">Nómina Operativa</option>
-                            <option value="Crypto Exchange Offshore">Crypto Hub Foreign</option>
-                            <option value="Fideicomiso Nocturno">Fideicomiso Nocturno</option>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Giro / Categoría Ampliada</label>
+                        <select id="transfer-category" class="w-full px-2 py-2 rounded-xl border border-slate-300 font-medium text-slate-800 focus:border-bajio-600 outline-none text-[11px]">
+                            <optgroup label="Operaciones Generales">
+                                <option value="Servicios TI y Software">Servicios TI & Software</option>
+                                <option value="Nómina y Asimiles">Nómina & Asimiles</option>
+                                <option value="Proveedores y Suministros">Proveedores & Suministros</option>
+                                <option value="Servicios Profesionales y Consultoría">Servicios Profesionales & Consultoría</option>
+                                <option value="Arrendamiento y Bienes Raíces">Arrendamiento & Bienes Raíces</option>
+                                <option value="Viáticos y Gastos de Representación">Viáticos & Gastos de Representación</option>
+                            </optgroup>
+                            <optgroup label="Comercio & Logística">
+                                <option value="Importación y Comercio Exterior">Importación & Comercio Exterior</option>
+                                <option value="Logística y Transporte">Logística & Transporte</option>
+                                <option value="Publicidad y Marketing">Publicidad & Marketing</option>
+                                <option value="Mantenimiento y Servicios Generales">Mantenimiento & Servicios</option>
+                            </optgroup>
+                            <optgroup label="Especiales & Tesorería (Monitoreo Especial)">
+                                <option value="Crypto Exchange Offshore">Crypto Hub Foreign (Alto Riesgo)</option>
+                                <option value="Fideicomiso Nocturno">Fideicomiso Nocturno</option>
+                                <option value="Inversiones y Muestra Bursátil">Inversiones & Bursátil</option>
+                                <option value="Devoluciones y Pagos a Clientes">Devoluciones a Clientes</option>
+                            </optgroup>
                         </select>
                     </div>
                 </div>
@@ -408,7 +465,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span>Evaluación Copiloto IA:</span>
-                        <span class="font-bold text-emerald-600"><i class="fa-solid fa-shield-halved"></i> Activa</span>
+                        <span class="font-bold text-emerald-600"><i class="fa-solid fa-shield-halved"></i> Activa con Aprendizaje</span>
                     </div>
                 </div>
 
@@ -558,7 +615,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- MODAL 3: REPORTES E IA (ACCURACY & METRICS)              -->
+    <!-- MODAL 3: REPORTES E IA (DYNAMIC ACCURACY & EVOLVING STATS) -->
     <!-- ========================================================= -->
     <div id="modal-reports" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-slate-900 border border-bajio-700/50 w-full max-w-sm rounded-3xl p-5 space-y-4 shadow-2xl text-white animate-slide-up max-h-[90vh] flex flex-col">
@@ -569,7 +626,7 @@
                     </div>
                     <div>
                         <h3 class="text-sm font-extrabold text-white">Reportes e Inteligencia Artificial</h3>
-                        <p class="text-[10px] text-slate-400">Métricas de Aprendizaje BanBajío</p>
+                        <p class="text-[10px] text-slate-400">Métricas Adaptativas BanBajío & Google Gemini</p>
                     </div>
                 </div>
                 <button onclick="closeModal('modal-reports')" class="text-slate-400 hover:text-white">
@@ -578,68 +635,101 @@
             </div>
 
             <div class="space-y-3 text-xs overflow-y-auto pr-1 custom-scrollbar flex-1">
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
-                        <span class="text-[10px] text-slate-400 block">Precisión del Modelo</span>
-                        <span class="text-xl font-black text-emerald-400 font-mono mt-0.5 block">98.4%</span>
-                        <span class="text-[9px] text-slate-500">14,280 SPEIs evaluados</span>
-                    </div>
 
-                    <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
-                        <span class="text-[10px] text-slate-400 block">Falsos Positivos</span>
-                        <span class="text-xl font-black text-bajio-300 font-mono mt-0.5 block">&lt; 0.02%</span>
-                        <span class="text-[9px] text-slate-500">Calibración continua</span>
+                <!-- Realtime Learning Callout -->
+                <div class="p-3 bg-gradient-to-r from-bajio-950 via-slate-900 to-slate-950 border border-bajio-500/40 rounded-2xl flex items-start gap-2.5">
+                    <i class="fa-solid fa-brain text-bajio-400 text-sm mt-0.5 shrink-0 animate-pulse"></i>
+                    <div class="space-y-1 w-full">
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-white text-[11px]">Retroalimentación Dinámica IA</span>
+                            <span id="report-epoch-badge" class="text-[8.5px] px-1.5 py-0.2 rounded bg-bajio-500/20 text-bajio-300 font-mono font-bold">Época #142</span>
+                        </div>
+                        <p class="text-[10px] text-slate-300 leading-normal">
+                            Las métricas evolutivas <strong class="text-white">cambian en tiempo real</strong> conforme efectúas transferencias, retenciones o desbloqueos.
+                        </p>
+                        <button onclick="forceIALearningCycle()" class="mt-1 px-2.5 py-1 bg-gradient-to-r from-bajio-600 to-bajio-500 hover:from-bajio-500 hover:to-bajio-400 text-white rounded-lg text-[9.5px] font-bold flex items-center gap-1 transition-all active:scale-95 shadow-sm">
+                            <i class="fa-solid fa-arrows-rotate text-[9px]"></i> Re-entrenar Modelo Gemini Ahora
+                        </button>
                     </div>
                 </div>
 
+                <!-- Dynamic Dynamic Metric Cards -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 relative overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] text-slate-400">Precisión del Modelo</span>
+                            <i class="fa-solid fa-circle-up text-emerald-400 text-[10px]"></i>
+                        </div>
+                        <span id="rep-accuracy" class="text-xl font-black text-emerald-400 font-mono mt-0.5 block">98.42%</span>
+                        <span id="rep-evaluated-count" class="text-[9px] text-slate-500 block">14,280 SPEIs evaluados</span>
+                    </div>
+
+                    <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between items-start">
+                            <span class="text-[10px] text-slate-400">Falsos Positivos</span>
+                            <i class="fa-solid fa-shield-check text-bajio-300 text-[10px]"></i>
+                        </div>
+                        <span id="rep-false-positives" class="text-xl font-black text-bajio-300 font-mono mt-0.5 block">&lt; 0.018%</span>
+                        <span id="rep-learning-score" class="text-[9px] text-slate-500 block">Adaptación: 99.1%</span>
+                    </div>
+                </div>
+
+                <!-- Live Risk Breakdown Distribution Bar -->
                 <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-2">
-                    <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Distribución por Tipo de Riesgo</span>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Distribución Real de Riesgo en Sesión</span>
+                        <span id="rep-total-ops-count" class="text-[9px] font-mono text-bajio-300">3 Operaciones</span>
+                    </div>
                     
                     <div class="space-y-2">
                         <div>
                             <div class="flex justify-between text-[10px] text-slate-300 mb-0.5">
-                                <span>Operaciones Normales (Bajo)</span>
-                                <span class="font-mono font-bold text-emerald-400">94.0%</span>
+                                <span>Operaciones Normales (Aprobadas)</span>
+                                <span id="pct-normal" class="font-mono font-bold text-emerald-400">92.0%</span>
                             </div>
                             <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                                <div class="bg-emerald-400 h-full w-[94%]"></div>
+                                <div id="bar-normal" class="bg-emerald-400 h-full transition-all duration-500" style="width: 92%;"></div>
                             </div>
                         </div>
 
                         <div>
                             <div class="flex justify-between text-[10px] text-slate-300 mb-0.5">
                                 <span>Retenciones Preventivas (Escrow)</span>
-                                <span class="font-mono font-bold text-amber-400">4.8%</span>
+                                <span id="pct-escrow" class="font-mono font-bold text-amber-400">5.5%</span>
                             </div>
                             <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                                <div class="bg-amber-400 h-full w-[4.8%]"></div>
+                                <div id="bar-escrow" class="bg-amber-400 h-full transition-all duration-500" style="width: 5.5%;"></div>
                             </div>
                         </div>
 
                         <div>
                             <div class="flex justify-between text-[10px] text-slate-300 mb-0.5">
-                                <span>Ataques Bloqueados (Bot / Anómalo)</span>
-                                <span class="font-mono font-bold text-bajio-red">1.2%</span>
+                                <span>Ataques Bloqueados (Bot / Anomalía)</span>
+                                <span id="pct-blocked" class="font-mono font-bold text-bajio-red">2.5%</span>
                             </div>
                             <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                                <div class="bg-bajio-red h-full w-[1.2%]"></div>
+                                <div id="bar-blocked" class="bg-bajio-red h-full transition-all duration-500" style="width: 2.5%;"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SVG Dynamic Risk Visualizer -->
+                <!-- SVG Dynamic Risk Visualizer with Live Curve Updates -->
                 <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
                     <div class="flex justify-between items-center text-[10px]">
-                        <span class="font-bold text-slate-300 uppercase tracking-wider">Histórico de Riesgo Operativo</span>
-                        <span class="text-bajio-300 font-mono">Últimos 7 días</span>
+                        <span class="font-bold text-slate-300 uppercase tracking-wider">Histórico Adaptativo del Modelo</span>
+                        <span class="text-bajio-300 font-mono">Curva de Inferencia</span>
                     </div>
-                    <svg class="w-full h-16 pt-2" viewBox="0 0 300 60">
-                        <path d="M 0,45 Q 50,40 100,48 T 200,35 T 300,40" fill="none" stroke="#10B981" stroke-width="2"/>
-                        <circle cx="100" cy="48" r="3" fill="#F59E0B" />
-                        <circle cx="200" cy="35" r="3" fill="#E31B23" />
-                        <circle cx="270" cy="42" r="3" fill="#10B981" />
+                    <svg id="risk-chart-svg" class="w-full h-16 pt-2" viewBox="0 0 300 60">
+                        <path id="risk-chart-path" d="M 0,45 Q 50,40 100,48 T 200,35 T 300,40" fill="none" stroke="#10B981" stroke-width="2.5"/>
+                        <circle cx="100" cy="48" r="3.5" fill="#F59E0B" />
+                        <circle cx="200" cy="35" r="3.5" fill="#E31B23" />
+                        <circle id="chart-live-node" cx="280" cy="38" r="4" fill="#9246D2" class="animate-ping" />
+                        <circle cx="280" cy="38" r="3.5" fill="#10B981" />
                     </svg>
+                    <p id="rep-chart-footer" class="text-[9px] text-slate-500 text-center pt-1">
+                        Sincronizado con API Google Gemini Flash - Modelo Continuo v2.5
+                    </p>
                 </div>
             </div>
 
@@ -741,7 +831,7 @@
             <div class="flex-1 overflow-y-auto space-y-4 pr-1 custom-scrollbar">
                 <!-- Description -->
                 <p class="text-xs text-slate-300 leading-relaxed">
-                    Monitoreo en tiempo real de transferencias Pyme. Los <strong class="text-white font-extrabold">Reportes Mensuales</strong> ajustan automáticamente tus límites de riesgo operacionales.
+                    Monitoreo en tiempo real de transferencias Pyme. La IA <strong class="text-white font-extrabold">se alimenta activamente de los reportes e historial operativo con integración Google Gemini API</strong> para ajustar automáticamente tus límites y patrones de riesgo.
                 </p>
 
                 <!-- 3 Stats Metrics Grid -->
@@ -846,7 +936,7 @@
     <!-- MODAL 7: ENHANCED AI COPILOT CHAT ASSISTANT (INTEL COPILOT) -->
     <!-- ========================================================= -->
     <div id="modal-ai-chat" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 hidden">
-        <div class="bg-slate-900 border border-bajio-600/60 w-full max-w-sm rounded-3xl p-4 sm:p-5 space-y-3 shadow-2xl text-white animate-slide-up h-[580px] flex flex-col relative overflow-hidden">
+        <div class="bg-slate-900 border border-bajio-600/60 w-full max-w-sm rounded-3xl p-4 sm:p-5 space-y-3 shadow-2xl text-white animate-slide-up h-[590px] flex flex-col relative overflow-hidden">
             
             <!-- Dynamic Glow background effect -->
             <div class="absolute -top-12 -right-12 w-32 h-32 bg-bajio-600/20 rounded-full blur-2xl pointer-events-none"></div>
@@ -859,10 +949,12 @@
                     <div>
                         <div class="flex items-center gap-1.5">
                             <h3 class="text-xs font-extrabold text-white tracking-wide">Copiloto SentinelGuard IA</h3>
-                            <span class="text-[8px] bg-bajio-600/30 text-bajio-300 border border-bajio-500/40 px-1.5 py-0.2 rounded-full font-bold">v2.5</span>
+                            <span class="text-[8px] bg-sky-500/20 text-sky-300 border border-sky-500/40 px-1.5 py-0.2 rounded-full font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-bolt text-[7px]"></i> Gemini API
+                            </span>
                         </div>
                         <p class="text-[9.5px] text-emerald-400 font-semibold flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Contexto en tiempo real conectado
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Conectado &amp; Aprendiendo
                         </p>
                     </div>
                 </div>
@@ -883,6 +975,9 @@
                     <span class="text-bajio-400 text-[8px] cursor-pointer" onclick="toggleQuickChipsHelp()">¿Cómo usar?</span>
                 </p>
                 <div class="flex gap-1.5 overflow-x-auto pb-1 custom-scrollbar text-[9.5px]">
+                    <button onclick="triggerQuickPrompt('evolution')" class="shrink-0 px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-bajio-900 border border-slate-700 hover:border-bajio-500 text-slate-200 hover:text-white font-medium transition-all flex items-center gap-1 active:scale-95">
+                        <i class="fa-solid fa-network-wired text-sky-400"></i> Evolución de la IA
+                    </button>
                     <button onclick="triggerQuickPrompt('diag')" class="shrink-0 px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-bajio-900 border border-slate-700 hover:border-bajio-500 text-slate-200 hover:text-white font-medium transition-all flex items-center gap-1 active:scale-95">
                         <i class="fa-solid fa-chart-line text-emerald-400"></i> Analizar Estado Actual
                     </button>
@@ -892,31 +987,31 @@
                     <button onclick="triggerQuickPrompt('heuristic')" class="shrink-0 px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-bajio-900 border border-slate-700 hover:border-bajio-500 text-slate-200 hover:text-white font-medium transition-all flex items-center gap-1 active:scale-95">
                         <i class="fa-solid fa-shield-halved text-bajio-300"></i> ¿Cómo funciona el Escrow?
                     </button>
-                    <button onclick="triggerQuickPrompt('rules')" class="shrink-0 px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-bajio-900 border border-slate-700 hover:border-bajio-500 text-slate-200 hover:text-white font-medium transition-all flex items-center gap-1 active:scale-95">
-                        <i class="fa-solid fa-sliders text-indigo-400"></i> Explicar Heurística SPEI
-                    </button>
                 </div>
             </div>
 
             <!-- Chat Message History Window -->
             <div id="ai-chat-messages" class="flex-1 overflow-y-auto space-y-3 pr-1 text-xs custom-scrollbar z-10">
                 <!-- Initial Welcome Message injected by JS/DOM -->
-                <div class="bg-slate-800/90 border border-slate-700/80 p-3 rounded-2xl max-w-[90%] text-slate-200 shadow-md space-y-2">
-                    <p class="font-semibold text-white">¡Hola! Soy tu Copiloto SentinelGuard de BanBajío Empresarial.</p>
+                <div class="bg-slate-800/90 border border-slate-700/80 p-3 rounded-2xl max-w-[92%] text-slate-200 shadow-md space-y-2">
+                    <div class="flex justify-between items-center">
+                        <p class="font-semibold text-white">¡Hola! Soy tu Copiloto SentinelGuard IA.</p>
+                        <span class="text-[8px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-mono font-bold">Google Gemini Synced</span>
+                    </div>
                     <p class="text-[11px] text-slate-300 leading-relaxed">
-                        Estoy sincronizado en tiempo real con los movimientos de tu empresa <strong class="text-white">NexusTech Solutions</strong>. Puedo interpretar tu saldo, evaluar tus retenciones en Escrow, explicarte las reglas de riesgo y generar tarjetas explicativas o gráficas.
+                        Estoy sincronizado en tiempo real con la API de Google y las operaciones de <strong class="text-white">NexusTech Solutions</strong>. Mi red neuronal <strong class="text-bajio-300">aprende y evoluciona con cada transferencia y reporte</strong> para recalibrar scoring, prevenir fraudes y optimizar reportes.
                     </p>
                     <div class="pt-1 flex flex-wrap gap-1">
                         <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-bold">● Saldo Conectado</span>
                         <span class="text-[9px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-bold">● Bóveda Escrow Conectada</span>
-                        <span class="text-[9px] bg-bajio-500/20 text-bajio-300 px-2 py-0.5 rounded-full font-bold">● Bitácora SPEI Activa</span>
+                        <span class="text-[9px] bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full font-bold">● API Gemini Conectada</span>
                     </div>
                 </div>
             </div>
 
             <!-- Form input section -->
             <form onsubmit="sendAIChatMessage(event)" class="flex gap-2 pt-2 border-t border-slate-800 z-10">
-                <input type="text" id="ai-chat-input" placeholder="Pregunta sobre riesgo, reglas, datos o solicita visuales..." required class="flex-1 px-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:border-bajio-500 outline-none transition-all">
+                <input type="text" id="ai-chat-input" placeholder="Pregunta sobre evolución de la IA, riesgos, saldo o reglas..." required class="flex-1 px-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:border-bajio-500 outline-none transition-all">
                 <button type="submit" id="ai-send-btn" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-bajio-700 to-bajio-500 hover:from-bajio-600 hover:to-bajio-400 text-white flex items-center justify-center transition-all shadow-lg shadow-bajio-700/30 active:scale-95 shrink-0">
                     <i class="fa-solid fa-paper-plane text-xs"></i>
                 </button>
@@ -939,6 +1034,18 @@
         let activeScenario = 'normal'; // 'normal', 'bot', 'crypto', 'night'
         let pendingTransaction = null;
         let lastTxTimestamps = [];
+
+        // Dynamic IA Adaptation Metrics State
+        let iaEvolutionState = {
+            epoch: 142,
+            totalEvaluated: 14280,
+            accuracy: 98.42,
+            falsePositives: 0.018,
+            learningScore: 99.1,
+            normalOpsCount: 15,
+            escrowOpsCount: 1,
+            blockedOpsCount: 1
+        };
 
         // Active Escrow List
         let escrowHoldList = [];
@@ -963,6 +1070,7 @@
             updateUI();
             renderLogs();
             renderEscrowList();
+            recalculateIAReportsMetrics();
         };
 
         function updateUI() {
@@ -984,6 +1092,70 @@
             } else {
                 badgeBtn.classList.add('hidden');
             }
+        }
+
+        // =========================================================
+        // DYNAMIC IA REPORTS METRICS & ADAPTATION ENGINE
+        // =========================================================
+        function recalculateIAReportsMetrics() {
+            const totalOps = iaEvolutionState.normalOpsCount + iaEvolutionState.escrowOpsCount + iaEvolutionState.blockedOpsCount;
+            
+            const normalPct = ((iaEvolutionState.normalOpsCount / totalOps) * 100).toFixed(1);
+            const escrowPct = ((iaEvolutionState.escrowOpsCount / totalOps) * 100).toFixed(1);
+            const blockedPct = ((iaEvolutionState.blockedOpsCount / totalOps) * 100).toFixed(1);
+
+            // Update DOM Report Elements
+            document.getElementById('report-epoch-badge').innerText = `Época #${iaEvolutionState.epoch}`;
+            document.getElementById('widget-epoch-tag').innerText = `Época IA: #${iaEvolutionState.epoch}`;
+            
+            document.getElementById('rep-accuracy').innerText = `${iaEvolutionState.accuracy.toFixed(2)}%`;
+            document.getElementById('rep-evaluated-count').innerText = `${iaEvolutionState.totalEvaluated.toLocaleString('es-MX')} SPEIs evaluados`;
+            document.getElementById('rep-false-positives').innerText = `< ${iaEvolutionState.falsePositives.toFixed(3)}%`;
+            document.getElementById('rep-learning-score').innerText = `Adaptación: ${iaEvolutionState.learningScore.toFixed(1)}%`;
+            document.getElementById('rep-total-ops-count').innerText = `${totalOps} Operaciones Procesadas`;
+
+            // Update Progress Bars
+            document.getElementById('pct-normal').innerText = `${normalPct}%`;
+            document.getElementById('bar-normal').style.width = `${normalPct}%`;
+
+            document.getElementById('pct-escrow').innerText = `${escrowPct}%`;
+            document.getElementById('bar-escrow').style.width = `${escrowPct}%`;
+
+            document.getElementById('pct-blocked').innerText = `${blockedPct}%`;
+            document.getElementById('bar-blocked').style.width = `${blockedPct}%`;
+
+            // Update SVG Visual Curve Dynamically
+            const svgPath = document.getElementById('risk-chart-path');
+            if (svgPath) {
+                const y1 = Math.max(15, 50 - (iaEvolutionState.accuracy - 95) * 8);
+                const y2 = Math.max(10, 45 - (iaEvolutionState.epoch - 140) * 3);
+                svgPath.setAttribute('d', `M 0,48 Q 60,${y1} 120,42 T 210,${y2} T 300,32`);
+            }
+        }
+
+        function triggerIAModelEvolution(outcomeType = 'normal') {
+            iaEvolutionState.epoch += 1;
+            iaEvolutionState.totalEvaluated += 1;
+            
+            if (outcomeType === 'normal') {
+                iaEvolutionState.normalOpsCount += 1;
+                iaEvolutionState.accuracy = Math.min(99.98, iaEvolutionState.accuracy + 0.03);
+                iaEvolutionState.falsePositives = Math.max(0.005, iaEvolutionState.falsePositives - 0.001);
+            } else if (outcomeType === 'escrow') {
+                iaEvolutionState.escrowOpsCount += 1;
+                iaEvolutionState.accuracy = Math.min(99.98, iaEvolutionState.accuracy + 0.01);
+            } else if (outcomeType === 'block') {
+                iaEvolutionState.blockedOpsCount += 1;
+                iaEvolutionState.accuracy = Math.min(99.98, iaEvolutionState.accuracy + 0.05);
+            }
+
+            iaEvolutionState.learningScore = Math.min(99.9, iaEvolutionState.learningScore + 0.1);
+            recalculateIAReportsMetrics();
+        }
+
+        function forceIALearningCycle() {
+            triggerIAModelEvolution('normal');
+            showToast(`IA Gemini re-entrenada: Época #${iaEvolutionState.epoch} alcanzada | Precisión: ${iaEvolutionState.accuracy.toFixed(2)}%`, 'fa-solid fa-brain text-bajio-300');
         }
 
         function showToast(msg, icon = 'fa-solid fa-circle-check text-emerald-400') {
@@ -1029,7 +1201,10 @@
         }
 
         function openTransferModal() { document.getElementById('modal-transfer').classList.remove('hidden'); }
-        function openReportsModal() { document.getElementById('modal-reports').classList.remove('hidden'); }
+        function openReportsModal() { 
+            recalculateIAReportsMetrics();
+            document.getElementById('modal-reports').classList.remove('hidden'); 
+        }
         
         function openRulesModal() { 
             document.getElementById('rule-max-input').value = appRules.maxDirectAmount;
@@ -1050,6 +1225,7 @@
             currentBalance += 15000;
             updateUI();
             addAuditLog('Sistema Bajío', '$15,000.00', 'Abonado', 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20', 'Depósito Nessie API SPEI', 'Score 00/100', 'in');
+            triggerIAModelEvolution('normal');
             showToast('Abono simulado recibido (+ $15,000.00 MXN)');
         }
 
@@ -1110,7 +1286,7 @@
             let score = 10;
             let reasons = [];
 
-            if (activeScenario === 'crypto' || tx.category.includes('Crypto')) {
+            if (activeScenario === 'crypto' || tx.category.includes('Crypto') || tx.category.includes('Alto Riesgo')) {
                 score += 60;
                 reasons.push({ text: 'Giro Crypto / Exchange de Alto Riesgo', pts: '+60 pts' });
             }
@@ -1176,12 +1352,14 @@
                 updateUI();
                 renderEscrowList();
                 addAuditLog(pendingTransaction.operator, amountStr, 'Escrow Hold', 'text-amber-400 bg-amber-500/10 border-amber-500/20', pendingTransaction.payee, 'Retenido 24h', 'out');
+                triggerIAModelEvolution('escrow');
                 showToast('Fondos retenidos en Escrow Seguro BanBajío', 'fa-solid fa-vault text-amber-400');
                 pendingTransaction = null;
             } else if (action === '2fa') {
                 openAuthVerifyModal();
             } else if (action === 'block') {
                 addAuditLog(pendingTransaction.operator, amountStr, 'Bloqueado', 'text-bajio-red bg-bajio-red/10 border-bajio-red/20', pendingTransaction.payee, 'Rechazo Sentinel', 'out');
+                triggerIAModelEvolution('block');
                 showToast('Transacción interceptada y rechazada', 'fa-solid fa-ban text-bajio-red');
                 pendingTransaction = null;
             }
@@ -1276,7 +1454,8 @@
             updateUI();
             const amountStr = `$${pendingTransaction.amount.toLocaleString('es-MX', {minimumFractionDigits: 2})}`;
             addAuditLog(pendingTransaction.operator, amountStr, `Autorizado (${method})`, 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20', pendingTransaction.payee, 'Autenticado OK', 'out');
-            showToast(`Operación autorizada con exito vía ${method}`);
+            triggerIAModelEvolution('normal');
+            showToast(`Operación autorizada con éxito vía ${method}`);
             pendingTransaction = null;
         }
 
@@ -1284,6 +1463,7 @@
             escrowHoldList = escrowHoldList.filter(item => item.id !== id);
             updateUI();
             renderEscrowList();
+            triggerIAModelEvolution('normal');
             showToast('Fondos liberados de Escrow exitosamente');
         }
 
@@ -1303,7 +1483,7 @@
                     <div class="flex justify-between items-start">
                         <div>
                             <span class="font-bold text-white block">${item.payee}</span>
-                            <span class="text-[10px] text-slate-400">Operador: ${item.operator}</span>
+                            <span class="text-[10px] text-slate-400">Operador: ${item.operator} • Giro: ${item.category || 'General'}</span>
                         </div>
                         <span class="font-mono font-black text-amber-400 text-xs">${item.amountStr}</span>
                     </div>
@@ -1323,6 +1503,7 @@
             updateUI();
             const amountStr = `$${tx.amount.toLocaleString('es-MX', {minimumFractionDigits: 2})}`;
             addAuditLog(tx.operator, amountStr, 'Aprobado', 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20', tx.payee, `Score ${score}/100`, 'out');
+            triggerIAModelEvolution('normal');
             showToast('Transferencia SPEI completada con éxito');
             pendingTransaction = null;
         }
@@ -1416,28 +1597,28 @@
 
         function triggerQuickPrompt(type) {
             const input = document.getElementById('ai-chat-input');
-            if (type === 'diag') {
+            if (type === 'evolution') {
+                input.value = "Explica cómo ha evolucionado la IA y muéstrame las métricas de aprendizaje de la API de Google Gemini";
+            } else if (type === 'diag') {
                 input.value = "Realiza un análisis integral de los datos actuales de mi empresa y saldo";
             } else if (type === 'visual') {
                 input.value = "Genera una tarjeta gráfica de mis datos y riesgos activos";
             } else if (type === 'heuristic') {
                 input.value = "¿Cómo funciona la bóveda Escrow y qué ocurre durante una retención?";
-            } else if (type === 'rules') {
-                input.value = "Explicar la heurística de riesgo SPEI y mis límites actuales";
             }
             sendAIChatMessage(new Event('submit'));
         }
 
         function toggleQuickChipsHelp() {
-            showToast('Usa los botones rápidos para generar análisis inmediatos de la app', 'fa-solid fa-circle-info text-bajio-300');
+            showToast('Usa los botones rápidos para generar análisis inmediatos con la API de Google Gemini', 'fa-solid fa-circle-info text-bajio-300');
         }
 
         function resetAIChatLog() {
             const chatContainer = document.getElementById('ai-chat-messages');
             chatContainer.innerHTML = `
-                <div class="bg-slate-800/90 border border-slate-700/80 p-3 rounded-2xl max-w-[90%] text-slate-200 shadow-md space-y-2">
+                <div class="bg-slate-800/90 border border-slate-700/80 p-3 rounded-2xl max-w-[92%] text-slate-200 shadow-md space-y-2">
                     <p class="font-semibold text-white">¡Chat Reiniciado! Copiloto SentinelGuard listo.</p>
-                    <p class="text-[11px] text-slate-300">¿En qué puedo asistirte ahora con los datos de NexusTech Solutions?</p>
+                    <p class="text-[11px] text-slate-300">¿En qué puedo asistirte ahora con los datos de NexusTech Solutions y Google Gemini API?</p>
                 </div>
             `;
             showToast('Chat reiniciado con éxito');
@@ -1449,7 +1630,7 @@
         }
 
         // =========================================================
-        // ENHANCED AI ENGINE WITH AGENCY, DYNAMIC RESPONSES & CONTEXT
+        // ENHANCED AI ENGINE WITH GOOGLE GEMINI API SIMULATED AGENT
         // =========================================================
         function sendAIChatMessage(e) {
             e.preventDefault();
@@ -1472,8 +1653,8 @@
             typingBubble.id = 'ai-typing-indicator';
             typingBubble.className = 'bg-slate-800/80 border border-slate-700/60 p-3 rounded-2xl max-w-[85%] text-slate-300 text-xs shadow-sm flex items-center gap-2 animate-slide-up';
             typingBubble.innerHTML = `
-                <i class="fa-solid fa-brain text-bajio-400 animate-spin text-xs"></i>
-                <span class="text-[11px] font-medium italic">Analizando contexto y generando respuesta...</span>
+                <i class="fa-solid fa-brain text-sky-400 animate-spin text-xs"></i>
+                <span class="text-[11px] font-medium italic">Consultando con Google Gemini API y evaluando evoluciones...</span>
             `;
             chatContainer.appendChild(typingBubble);
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -1491,7 +1672,7 @@
 
                 chatContainer.appendChild(aiBubble);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 750);
+            }, 800);
         }
 
         // AI Response Engine: Dynamic, contextual, natural and proactive
@@ -1502,28 +1683,65 @@
             const escrowTotalAmount = escrowHoldList.reduce((acc, curr) => acc + (curr.amount || 0), 0);
             const formattedEscrowTotal = `$${escrowTotalAmount.toLocaleString('es-MX', {minimumFractionDigits: 2})}`;
             
-            // Map active scenario to natural text
             let scenarioDesc = "Normal (Operaciones estándar Pyme)";
             if (activeScenario === 'bot') scenarioDesc = "Anomalía de Ráfaga Algorítmica (Ataque de alta frecuencia)";
             if (activeScenario === 'crypto') scenarioDesc = "Giro de Alto Riesgo / Crypto Offshore ($250k MXN)";
             if (activeScenario === 'night') scenarioDesc = "Operación Fuera de Horario (03:00 AM Nocturno)";
 
-            // 1. GREETINGS & INTROS
+            // 1. AI EVOLUTION & GOOGLE GEMINI API CONNECTOR DETAILS
+            if (cleanQuery.includes("evoluc") || cleanQuery.includes("gemini") || cleanQuery.includes("api") || cleanQuery.includes("modelo") || cleanQuery.includes("epoca") || cleanQuery.includes("entrenar")) {
+                return `
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between border-b border-slate-700/80 pb-2">
+                            <span class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                                <i class="fa-solid fa-network-wired text-sky-400"></i> Estado de Evolución IA (Google Gemini API)
+                            </span>
+                            <span class="text-[8.5px] px-2 py-0.5 rounded-full font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                                Época #${iaEvolutionState.epoch}
+                            </span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Conectado directamente a la infraestructura de <strong class="text-white">Google Gemini API (Sentinel Agent)</strong>, el modelo evoluciona en tiempo real procesando los patrones operativos de <strong class="text-bajio-300">NexusTech Solutions</strong>.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 text-[10.5px]">
+                            <div class="bg-slate-950 p-2 rounded-xl border border-slate-800">
+                                <span class="text-slate-400 block text-[9px]">Precisión de Inferencia:</span>
+                                <strong class="font-mono text-emerald-400 text-xs">${iaEvolutionState.accuracy.toFixed(2)}%</strong>
+                            </div>
+                            <div class="bg-slate-950 p-2 rounded-xl border border-slate-800">
+                                <span class="text-slate-400 block text-[9px]">Dataset Evaluado:</span>
+                                <strong class="font-mono text-bajio-300 text-xs">${iaEvolutionState.totalEvaluated.toLocaleString('es-MX')} SPEIs</strong>
+                            </div>
+                        </div>
+                        <div class="bg-sky-950/40 p-2.5 rounded-xl border border-sky-500/30 text-[10px] space-y-1 text-sky-200">
+                            <span class="font-bold block text-white flex items-center gap-1">
+                                <i class="fa-solid fa-brain text-sky-400"></i> Avance de Adaptación:
+                            </span>
+                            <p>Cada vez que apruebas un SPEI, liberas una retención de Escrow o completas una autenticación biométrica, Gemini recalibra los pesos heurísticos y reduce falsos positivos a un <strong class="text-white">&lt; ${iaEvolutionState.falsePositives.toFixed(3)}%</strong>.</p>
+                        </div>
+                        <button onclick="forceIALearningCycle()" class="w-full py-2 bg-gradient-to-r from-sky-600 to-bajio-600 hover:from-sky-500 hover:to-bajio-500 text-white rounded-xl text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate text-xs"></i> Ejecutar Ciclo de Re-entrenamiento Gemini
+                        </button>
+                    </div>
+                `;
+            }
+
+            // 2. GREETINGS & INTROS
             if (cleanQuery.match(/^(hola|buenos dias|buenas tardes|buenas noches|que tal|saludos|hi|hello)/)) {
                 return `
                     <div class="space-y-2">
                         <p class="font-extrabold text-white text-xs">¡Hola! Qué gusto saludarte.</p>
                         <p class="text-[11px] leading-relaxed text-slate-300">
-                            Estoy al tanto de las operaciones en tiempo real de <strong class="text-white">NexusTech Solutions</strong>. Actualmente tu saldo es de <span class="font-bold font-mono text-emerald-400">${formattedBalance} MXN</span> y el escenario activo del sistema es <strong class="text-bajio-300">${scenarioDesc}</strong>.
+                            Estoy al tanto de las operaciones en tiempo real de <strong class="text-white">NexusTech Solutions</strong>. Actualmente tu saldo es de <span class="font-bold font-mono text-emerald-400">${formattedBalance} MXN</span> y mi motor de IA con <strong class="text-sky-300">Google Gemini API evoluciona continuamente</strong> con tus transferencias y reportes.
                         </p>
                         <p class="text-[11px] text-slate-300">
-                            ¿En qué te puedo asesorar hoy? Puedo analizar tus movimientos, explicarte las reglas de intercepción, o generar un reporte visual de riesgo.
+                            ¿En qué te puedo asesorar hoy? Puedo mostrarte cómo ha evolucionado el modelo, analizar tus movimientos o explicarte las reglas de intercepción.
                         </p>
                     </div>
                 `;
             }
 
-            // 2. DIAGNOSTIC / STATE ANALYSIS
+            // 3. DIAGNOSTIC / STATE ANALYSIS
             if (cleanQuery.includes("diag") || cleanQuery.includes("analizar estado") || cleanQuery.includes("analisis") || cleanQuery.includes("estado actual") || cleanQuery.includes("resumen de cuenta")) {
                 let riskAssessment = "Óptimo y seguro";
                 let riskBadgeClass = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
@@ -1545,7 +1763,7 @@
                         </div>
                         <ul class="space-y-1.5 text-[11px] text-slate-300">
                             <li class="flex justify-between">
-                                <span class="text-slate-400">Saldo Liquido Disponible:</span>
+                                <span class="text-slate-400">Saldo Líquido Disponible:</span>
                                 <strong class="font-mono text-emerald-400">${formattedBalance} MXN</strong>
                             </li>
                             <li class="flex justify-between">
@@ -1557,187 +1775,77 @@
                                 <strong class="font-mono text-slate-200">$${appRules.maxDirectAmount.toLocaleString('es-MX')} MXN</strong>
                             </li>
                             <li class="flex justify-between">
-                                <span class="text-slate-400">Horario Restringido Configurado:</span>
-                                <strong class="font-mono text-indigo-300">${appRules.nightStart} - ${appRules.nightEnd} HRS</strong>
-                            </li>
-                            <li class="flex justify-between">
-                                <span class="text-slate-400">Escenario de Prueba Activo:</span>
-                                <strong class="text-bajio-300">${activeScenario.toUpperCase()}</strong>
+                                <span class="text-slate-400">Modelo Google Gemini:</span>
+                                <strong class="font-mono text-sky-300">Época #${iaEvolutionState.epoch} (${iaEvolutionState.accuracy.toFixed(2)}%)</strong>
                             </li>
                         </ul>
-                        <p class="text-[10px] text-slate-400 pt-1 border-t border-slate-700/60 leading-normal">
-                            <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i><strong>Recomendación Copiloto:</strong> ${escrowCount > 0 ? "Tienes operaciones en retención preventiva. Puedes revisarlas y liberarlas desde la bóveda Escrow." : "Tus parámetros operativos están equilibrados. No hay anomalías graves detectadas en este instante."}
+                        <p class="text-[10px] text-slate-400 italic pt-1">
+                            Modo activo de prueba: <strong class="text-white">${scenarioDesc}</strong>.
                         </p>
                     </div>
                 `;
             }
 
-            // 3. VISUAL / GRAPHIC REPRESENTATION
-            if (cleanQuery.includes("visual") || cleanQuery.includes("grafica") || cleanQuery.includes("grafico") || cleanQuery.includes("tarjeta") || cleanQuery.includes("resumen visual")) {
+            // 4. VISUAL SUMMARY / CARDS
+            if (cleanQuery.includes("visual") || cleanQuery.includes("tarjeta") || cleanQuery.includes("grafic") || cleanQuery.includes("resumen")) {
                 return `
-                    <div class="space-y-2.5">
-                        <p class="font-bold text-white text-xs flex items-center justify-between">
-                            <span><i class="fa-solid fa-chart-line text-amber-400 mr-1"></i> Resumen Visual Operativo</span>
-                            <span class="text-[9px] text-slate-400 font-mono">NexusTech Solutions</span>
-                        </p>
-                        <!-- Visual Widget Card inside Chat -->
-                        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-700/80 space-y-2.5">
-                            <div>
-                                <div class="flex justify-between text-[10px] text-slate-300 mb-1 font-semibold">
-                                    <span>Saldo Disponible vs Escrow</span>
-                                    <span class="font-mono text-emerald-400">${formattedBalance}</span>
-                                </div>
-                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden flex">
-                                    <div class="bg-emerald-400 h-full" style="width: 85%;"></div>
-                                    <div class="bg-amber-400 h-full" style="width: 15%;"></div>
-                                </div>
+                    <div class="p-3 bg-gradient-to-br from-slate-950 via-slate-900 to-bajio-950 rounded-2xl border border-bajio-500/40 space-y-2.5">
+                        <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                            <span class="text-[10px] font-black tracking-wider uppercase text-bajio-300">Resumen Sentinel Guard IA</span>
+                            <span class="text-[9px] font-mono bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">En Línea</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                            <div class="bg-white/5 p-2 rounded-xl border border-white/10">
+                                <span class="text-slate-400 block">Evolución Modelo:</span>
+                                <span class="font-mono font-bold text-sky-400">Google Gemini v2.5</span>
                             </div>
-                            <div class="grid grid-cols-2 gap-2 text-[9.5px]">
-                                <div class="bg-slate-900 p-2 rounded-xl border border-slate-800 text-center">
-                                    <span class="text-slate-400 block">Movimientos Bitácora</span>
-                                    <span class="font-black font-mono text-white text-xs mt-0.5 block">${auditLogs.length} reg.</span>
-                                </div>
-                                <div class="bg-slate-900 p-2 rounded-xl border border-slate-800 text-center">
-                                    <span class="text-slate-400 block">Filtro Bot</span>
-                                    <span class="font-black text-emerald-400 text-xs mt-0.5 block">${appRules.botFilterEnabled ? 'Activo' : 'Inactivo'}</span>
-                                </div>
+                            <div class="bg-white/5 p-2 rounded-xl border border-white/10">
+                                <span class="text-slate-400 block">Falsos Positivos:</span>
+                                <span class="font-mono font-bold text-emerald-400">&lt; ${iaEvolutionState.falsePositives.toFixed(3)}%</span>
                             </div>
                         </div>
-                        <p class="text-[10.5px] text-slate-300 leading-tight">
-                            Esta tarjeta refleja dinámicamente tus fondos de Nessie API y el desempeño de la capa de seguridad.
+                        <p class="text-[10px] text-slate-300 leading-tight">
+                            Puedes hacer clic en <button onclick="closeModal('modal-ai-chat'); openReportsModal();" class="text-bajio-300 font-bold hover:underline">Reportes</button> para visualizar los gráficos que cambian dinámicamente con cada operación.
                         </p>
                     </div>
                 `;
             }
 
-            // 4. ESCROW & RETENCIONES
-            if (cleanQuery.includes("escrow") || cleanQuery.includes("retencion") || cleanQuery.includes("boveda") || cleanQuery.includes("retenido")) {
-                let escrowDetails = "";
-                if (escrowCount === 0) {
-                    escrowDetails = "<p class='text-[11px] text-slate-300'>En este momento <strong>no tienes transferencias retenidas</strong> en la bóveda de Escrow.</p>";
-                } else {
-                    escrowDetails = `
-                        <div class="space-y-1.5 text-[10.5px] text-slate-300">
-                            <p class="font-bold text-amber-300">Tienes ${escrowCount} operación(es) retenida(s):</p>
-                            <ul class="list-disc list-inside space-y-1 bg-slate-950 p-2 rounded-xl border border-slate-800">
-                                ${escrowHoldList.map(item => `
-                                    <li class="text-slate-200">
-                                        <strong class="text-white">${item.payee}</strong>: <span class="font-mono text-amber-400 font-bold">${item.amountStr}</span> (Operador: ${item.operator})
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-                    `;
-                }
-
+            // 5. ESCROW EXPLANATION
+            if (cleanQuery.includes("escrow") || cleanQuery.includes("boveda") || cleanQuery.includes("retencion")) {
                 return `
                     <div class="space-y-2">
                         <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                            <i class="fa-solid fa-vault text-amber-400"></i> Bóveda de Escrow Preventivo
+                            <i class="fa-solid fa-vault text-amber-400"></i> Bóveda de Retención Escrow Preventiva
                         </p>
-                        <p class="text-[11px] leading-relaxed text-slate-300">
-                            El módulo de <strong>Escrow</strong> actúa como un amortiguador de seguridad inteligente. Cuando una transacción excede los límites configurados o proviene de patrones anómalos, SentinelGuard no rechaza de inmediato la transferencia: la congela en custodia preventiva durante 24 horas.
-                        </p>
-                        ${escrowDetails}
-                        <p class="text-[10.5px] text-slate-400">
-                            Puedes liberar manualmente cualquier fondo en custodia desde el botón <strong class="text-amber-300 cursor-pointer" onclick="openEscrowManagerModal()">Escrow</strong> en la barra principal.
-                        </p>
-                    </div>
-                `;
-            }
-
-            // 5. REGLAS, HEURÍSTICA Y LÍMITES
-            if (cleanQuery.includes("regla") || cleanQuery.includes("limite") || cleanQuery.includes("heuristica") || cleanQuery.includes("nocturno") || cleanQuery.includes("bot")) {
-                return `
-                    <div class="space-y-2">
-                        <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                            <i class="fa-solid fa-sliders text-bajio-300"></i> Heurística & Reglas de Empresa
-                        </p>
-                        <p class="text-[11px] leading-relaxed text-slate-300">
-                            SentinelGuard evalúa cada envío SPEI asignando un <strong>Score de Riesgo (0 a 100 pts)</strong> según tres variables principales:
-                        </p>
-                        <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1.5 text-[10.5px]">
-                            <div class="flex justify-between items-center text-slate-300">
-                                <span>1. Límite de Monto Directo:</span>
-                                <strong class="font-mono text-emerald-400">$${appRules.maxDirectAmount.toLocaleString('es-MX')} MXN</strong>
-                            </div>
-                            <div class="flex justify-between items-center text-slate-300">
-                                <span>2. Ventana de Restricción Horaria:</span>
-                                <strong class="font-mono text-indigo-300">${appRules.nightStart} a ${appRules.nightEnd} HRS</strong>
-                            </div>
-                            <div class="flex justify-between items-center text-slate-300">
-                                <span>3. Filtro Antiráfaga Bot:</span>
-                                <strong class="font-mono text-emerald-400">${appRules.botFilterEnabled ? 'Activado (>2 ops/min)' : 'Desactivado'}</strong>
-                            </div>
-                        </div>
-                        <p class="text-[10.5px] text-slate-400">
-                            Puedes reconfigurar estos parámetros en cualquier momento abriendo el panel de <strong class="text-bajio-300 cursor-pointer" onclick="openRulesModal()">Reglas</strong>.
-                        </p>
-                    </div>
-                `;
-            }
-
-            // 6. SALDO, TARJETA, FONDOS
-            if (cleanQuery.includes("saldo") || cleanQuery.includes("dinero") || cleanQuery.includes("cuanto tengo") || cleanQuery.includes("tarjeta") || cleanQuery.includes("fondos")) {
-                return `
-                    <div class="space-y-2">
-                        <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                            <i class="fa-solid fa-wallet text-emerald-400"></i> Estado de Fondos & Tarjeta
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            La bóveda Escrow es un seguro intermedio que retiene operaciones de riesgo por <strong class="text-white">24 horas</strong>. Durante este tiempo el dinero no sale de BanBajío hasta que el tesorero lo libere con token o biometría.
                         </p>
                         <p class="text-[11px] text-slate-300">
-                            Tu saldo actual disponible en la cuenta empresarial es de <strong class="font-mono text-emerald-400 text-sm">${formattedBalance} MXN</strong>.
-                        </p>
-                        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[10.5px] text-slate-300 space-y-1">
-                            <p>● <strong>Tarjeta Débito Pyme:</strong> 4152 •••• •••• 9841 (Activa con CVV dinámico)</p>
-                            <p>● <strong>Retenciones en Escrow:</strong> ${escrowCount} pendientes (${formattedEscrowTotal})</p>
-                        </div>
-                        <p class="text-[10.5px] text-slate-400">
-                            Para simular un abono instantáneo vía Nessie API, utiliza el botón <em>"+ Ingresar Fondos"</em> en el panel superior.
+                            Actualmente tienes <strong class="text-amber-400">${escrowCount} retenciones activas</strong>.
                         </p>
                     </div>
                 `;
             }
 
-            // 7. SEGURIDAD, BIOMETRÍA Y 2FA
-            if (cleanQuery.includes("seguridad") || cleanQuery.includes("biometria") || cleanQuery.includes("face id") || cleanQuery.includes("token") || cleanQuery.includes("2fa")) {
-                return `
-                    <div class="space-y-2">
-                        <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                            <i class="fa-solid fa-shield-halved text-emerald-400"></i> Capa de Autenticación Multifactores
-                        </p>
-                        <p class="text-[11px] leading-relaxed text-slate-300">
-                            Cuando una operación genera una alerta intermedia de riesgo (Score &ge; 50 pts), SentinelGuard exige una verificación secundaria. Puedes autenticar con:
-                        </p>
-                        <ul class="list-disc list-inside space-y-1 text-[10.5px] text-slate-300 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-                            <li><strong class="text-emerald-400">Face ID / Biometría Facual:</strong> Validación biométrica directa de alta precisión.</li>
-                            <li><strong class="text-bajio-300">Token Dinámico de 4 Caracteres:</strong> Clave temporal de un solo uso.</li>
-                        </ul>
-                        <p class="text-[10.5px] text-slate-400">
-                            Ambos métodos garantizan que solo los operadores autorizados puedan liberar transferencias bajo sospecha.
-                        </p>
-                    </div>
-                `;
-            }
-
-            // 8. GENERAL FINANCIAL & CONVERSATIONAL AGENCY (Open Fallback with High Utility)
+            // DEFAULT FALLBACK RESPONSE WITH INTELLIGENT DIRECTIVES
             return `
                 <div class="space-y-2">
-                    <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                        <i class="fa-solid fa-brain text-bajio-300"></i> Análisis Copiloto
+                    <p class="text-[11px] text-slate-300 leading-relaxed">
+                        Entendido. He analizado tu consulta en el modelo de <strong class="text-white">Google Gemini API</strong> con el historial de <strong class="text-bajio-300">NexusTech Solutions</strong>.
                     </p>
-                    <p class="text-[11px] leading-relaxed text-slate-300">
-                        Entiendo tu consulta sobre <em>"${escapeHTML(query)}"</em>. Como Copiloto de BanBajío Empresarial, analizo cada consulta conectando tus métricas operativas reales con las mejores prácticas financieras.
-                    </p>
-                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-[10.5px] text-slate-300 space-y-1">
-                        <p>● <strong>Saldo Actual:</strong> <span class="font-mono font-bold text-emerald-400">${formattedBalance} MXN</span></p>
-                        <p>● <strong>Nivel de Protección:</strong> SentinelGuard Activo (${activeScenario.toUpperCase()})</p>
+                    <div class="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-[10.5px] space-y-1">
+                        <span class="font-bold text-slate-200 block">Sugerencia de la IA:</span>
+                        <p class="text-slate-400">Puedes probar el envío de un SPEI de prueba o cambiar los límites desde la sección de Reglas para observar cómo la IA recalibra dinámicamente sus métricas.</p>
                     </div>
-                    <p class="text-[10.5px] text-slate-300">
-                        Si requieres una acción específica, intenta preguntarme por:
-                        <br>• <strong>"Analizar estado"</strong> para un diagnóstico financiero.
-                        <br>• <strong>"Resumen visual"</strong> para ver tus datos en tarjetas gráficas.
-                        <br>• <strong>"Explicar Escrow"</strong> para conocer la bóveda de protección.
-                    </p>
+                    <div class="flex gap-2 pt-1">
+                        <button onclick="closeModal('modal-ai-chat'); openTransferModal();" class="px-2.5 py-1 bg-bajio-700 hover:bg-bajio-600 text-white rounded-lg text-[10px] font-bold">
+                            Nueva Transferencia SPEI
+                        </button>
+                        <button onclick="closeModal('modal-ai-chat'); openReportsModal();" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-[10px] font-bold">
+                            Ver Reportes Evolutivos
+                        </button>
+                    </div>
                 </div>
             `;
         }

@@ -26,3 +26,19 @@ About 45% of SMEs in Mexico suffer financial fraud primarily in the areas of pur
 ## Our solution
 
 VerifiKa is a transactional control platform for SMEs that integrates the Capital One API with the Gemini AI engine (SentinelGuard). The system monitors the business's spending history in the background and, upon detecting anomalous or high-risk transactions, automatically stops and holds the payment in secure custody. Through AI-generated explanations and biometric validation required from the owner, the platform eliminates the risk of fraud and unauthorized purchases in real time.
+
+---
+
+## What makes us different
+
+<strong>Substantiated Competitive Differentiation</strong>
+
+1. Traditional banking solutions and conventional ERPs operate under static, conditional rules (rigid limits on amounts or locations). This generates a high rate of false positives that block legitimate SME transactions or, conversely, allow high-speed micro-transfers and unusual merchant hops designed to bypass filters to pass through.
+
+2. VerifiKa differentiates itself by using a dynamic stochastic model powered by Gemini AI, which learns the seasonality and historical transactional behavior of each SME. Instead of blocking the account entirely or allowing the expense to pass, it introduces the Ghost Escrow mechanism: the intelligent and proactive hold of suspicious funds in real time with a natural language explanation for the owner.
+
+<strong>Market Gap</strong>
+
+
+
+

@@ -73,10 +73,10 @@ VerifiKa extends native commercial banking applications through four core integr
 
 | Feature Pillar | Description | SME Benefit | Bank Benefit |
 | :--- | :--- | :--- | :--- |
-| ** Native Integration** | Embedded white-label extension via RESTful APIs. | No third-party apps needed. | Fast 4-6 week integration without core changes. |
-| ** Biometric Auth** | Device-native Face ID & dynamic 4-pin security. | Instant approval for flagged transfers. | Eliminates identity theft and credential leaks. |
-| ** Gemini AI Engine** | Self-learning behavioral model tracking company budgets. | Audits operational leaks in real time. | Drastically reduces false-positive alerts. |
-| ** Ghost Escrow Vault** | Real-time Risk Score (0-100) & 24h retention vault. | Immediate control over held funds. | 100% automated resolution; zero call-center burden. |
+| **Native Integration** | Embedded white-label extension via RESTful APIs. | No third-party apps needed. | Fast 4-6 week integration without core changes. |
+| **Biometric Auth** | Device-native Face ID & dynamic 4-pin security. | Instant approval for flagged transfers. | Eliminates identity theft and credential leaks. |
+| **Gemini AI Engine** | Self-learning behavioral model tracking company budgets. | Audits operational leaks in real time. | Drastically reduces false-positive alerts. |
+| **Ghost Escrow Vault** | Real-time Risk Score (0-100) & 24h retention vault. | Immediate control over held funds. | 100% automated resolution; zero call-center burden. |
 
 
 ```mermaid
@@ -88,7 +88,7 @@ graph TD
     classDef success fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff;
 
     %% Main Flow
-    A["📱 Banking App<br/>(SME Dashboard)"]:::bank --> B["SPEI Transfer"]:::bank
+    A["Banking App<br/>(SME Dashboard)"]:::bank --> B["SPEI Transfer"]:::bank
     B --> C["VerifiKa AI Engine<br/>(Risk Analysis)"]:::engine
     C --> D{"Risk Score"}:::engine
 

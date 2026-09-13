@@ -33,15 +33,15 @@ Approximately 45% of SMEs in Mexico suffer financial fraud due to overbilling an
 
 <strong>Substantiated Competitive Differentiation</strong>
 
-1. VerifiKa serves as an intelligent cybersecurity extension within the bank's mobile app:
+VerifiKa serves as an intelligent cybersecurity extension within the bank's mobile app:
 
-2. Heuristic Risk Engine: Evaluates transaction risk in real time based on timing, amounts, and frequency patterns.
+1.  Heuristic Risk Engine: Evaluates transaction risk in real time based on timing, amounts, and frequency patterns.
 
-3. Escrow Vault: Intercepts suspicious transactions and holds funds temporarily for review instead of triggering immediate, disruptive rejections.
+2. Escrow Vault: Intercepts suspicious transactions and holds funds temporarily for review instead of triggering immediate, disruptive rejections.
 
-4. Multi-Factor Authentication: Requires biometric confirmation and individual user access codes to authorize flagged movements.
+3. Multi-Factor Authentication: Requires biometric confirmation and individual user access codes to authorize flagged movements.
 
-5. Gemini AI Copilot & Shield Dashboard: Analyzes historical behavior, generates custom security reports, and gives SMEs direct control over rules and access levels.
+41. Gemini AI Copilot & Shield Dashboard: Analyzes historical behavior, generates custom security reports, and gives SMEs direct control over rules and access levels.
 
 ---
 

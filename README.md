@@ -52,11 +52,11 @@ VerifiKa creates a seamless interaction between commercial banks and SME users a
 
 | Stage | Bank Action | SME Action | Pain Point Solved | Tech / AI Engine |
 | :--- | :--- | :--- | :--- | :--- |
-| **1. Acquisition** | Integrates White-Label API. | Activates Shield in app. | Eliminates 18-mo dev cycle. | REST API & Webhooks. |
+| **1. Acquisition** | Integrates API. | Activates Shield in app. | Eliminates 18-mo dev cycle. | REST API & Webhooks. |
 | **2. Onboarding** | Deploys Security Plus. | Configures roles & Face ID. | 2-minute digital setup. | Gemini baseline model. |
 | **3. Operations** | Monitors SPEI passively. | Executes daily payments. | Zero false-positive blocks. | Real-time heuristic scoring. |
 | **4. Detection** | Ghost Escrow (Score ≥ 50). | Authorizes via Face ID. | 100% automated resolution. | Dynamic Risk Engine & Biometrics. |
-| **5. Monetization**| Collects $15/mo net margin. | Reviews AI security reports.| Turns security into profit. | Adaptive fraud analytics. |
+| **5. Monetization**| Pay license | Reviews AI security reports.| Turns security into profit. | Adaptive fraud analytics. |
 
 
 ## Key Journey Highlights

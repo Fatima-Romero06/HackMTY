@@ -1,2 +1,0 @@
-[Uploading VerifiKa.pdf…]()
-

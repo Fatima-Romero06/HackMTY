@@ -1443,6 +1443,14 @@
             showToast('Chat reiniciado con éxito');
         }
 
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        // =========================================================
+        // ENHANCED AI ENGINE WITH AGENCY, DYNAMIC RESPONSES & CONTEXT
+        // =========================================================
         function sendAIChatMessage(e) {
             e.preventDefault();
             const input = document.getElementById('ai-chat-input');
@@ -1462,251 +1470,274 @@
             // Render Typing Indicator
             const typingBubble = document.createElement('div');
             typingBubble.id = 'ai-typing-indicator';
-            typingBubble.className = 'bg-slate-800/80 border border-slate-700/60 p-3 rounded-2xl max-w-[85%] text-slate-300 text-xs shadow-sm flex items-center gap-2';
+            typingBubble.className = 'bg-slate-800/80 border border-slate-700/60 p-3 rounded-2xl max-w-[85%] text-slate-300 text-xs shadow-sm flex items-center gap-2 animate-slide-up';
             typingBubble.innerHTML = `
-                <i class="fa-solid fa-brain text-bajio-400 animate-bounce"></i>
-                <span class="text-[11px] font-mono text-slate-400">SentinelCopilot interpretando datos...</span>
+                <i class="fa-solid fa-brain text-bajio-400 animate-spin text-xs"></i>
+                <span class="text-[11px] font-medium italic">Analizando contexto y generando respuesta...</span>
             `;
             chatContainer.appendChild(typingBubble);
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            // Generate AI Data-Aware Response
+            // Generate intelligent AI response after short delay
             setTimeout(() => {
                 const indicator = document.getElementById('ai-typing-indicator');
                 if (indicator) indicator.remove();
 
+                const responseData = generateAIResponse(msg);
+
                 const aiBubble = document.createElement('div');
-                aiBubble.className = 'bg-slate-800/90 border border-slate-700/80 p-3.5 rounded-2xl max-w-[90%] text-slate-200 text-xs shadow-lg space-y-2.5 animate-slide-up';
-                
-                // Process dynamic state interpretation & visual generation
-                const responseHTML = generateAdvancedAIResponse(msg);
-                aiBubble.innerHTML = responseHTML;
+                aiBubble.className = 'bg-slate-800/90 border border-slate-700/80 p-3.5 rounded-2xl max-w-[92%] text-slate-200 shadow-md space-y-2 animate-slide-up';
+                aiBubble.innerHTML = responseData;
 
                 chatContainer.appendChild(aiBubble);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 650);
+            }, 750);
         }
 
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-            );
-        }
-
-        function generateAdvancedAIResponse(query) {
-            const q = query.toLowerCase();
+        // AI Response Engine: Dynamic, contextual, natural and proactive
+        function generateAIResponse(query) {
+            const cleanQuery = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const formattedBalance = `$${currentBalance.toLocaleString('es-MX', {minimumFractionDigits: 2})}`;
-            const totalEscrows = escrowHoldList.length;
-            const totalEscrowAmount = escrowHoldList.reduce((acc, item) => acc + (item.amount || 0), 0);
-            const formattedEscrowAmt = `$${totalEscrowAmount.toLocaleString('es-MX', {minimumFractionDigits: 2})}`;
-            const recentLog = auditLogs[0] || { payee: 'Ninguno', operator: 'N/A', amount: '$0.00' };
+            const escrowCount = escrowHoldList.length;
+            const escrowTotalAmount = escrowHoldList.reduce((acc, curr) => acc + (curr.amount || 0), 0);
+            const formattedEscrowTotal = `$${escrowTotalAmount.toLocaleString('es-MX', {minimumFractionDigits: 2})}`;
+            
+            // Map active scenario to natural text
+            let scenarioDesc = "Normal (Operaciones estándar Pyme)";
+            if (activeScenario === 'bot') scenarioDesc = "Anomalía de Ráfaga Algorítmica (Ataque de alta frecuencia)";
+            if (activeScenario === 'crypto') scenarioDesc = "Giro de Alto Riesgo / Crypto Offshore ($250k MXN)";
+            if (activeScenario === 'night') scenarioDesc = "Operación Fuera de Horario (03:00 AM Nocturno)";
 
-            // SCENARIO 1: Visual Resource or Graph Requested
-            if (q.includes('visual') || q.includes('grafic') || q.includes('cuadro') || q.includes('resumen visual') || q.includes('recurso')) {
+            // 1. GREETINGS & INTROS
+            if (cleanQuery.match(/^(hola|buenos dias|buenas tardes|buenas noches|que tal|saludos|hi|hello)/)) {
                 return `
                     <div class="space-y-2">
-                        <div class="flex items-center justify-between border-b border-slate-700/60 pb-1.5">
-                            <span class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                                <i class="fa-solid fa-chart-pie text-bajio-400"></i> Panel Visual de Diagnóstico Financiero
-                            </span>
-                            <span class="text-[9px] bg-bajio-600/30 text-bajio-300 font-mono px-1.5 py-0.5 rounded">Verifika Live</span>
-                        </div>
-
-                        <!-- Visual Card Component -->
-                        <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-2 text-[10.5px]">
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-400">Saldo Disponible Liquido:</span>
-                                <span class="font-mono font-bold text-emerald-400">${formattedBalance}</span>
-                            </div>
-                            <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden flex">
-                                <div class="bg-emerald-400 h-full" style="width: 75%"></div>
-                                <div class="bg-amber-400 h-full" style="width: 25%"></div>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-1.5 pt-1">
-                                <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 text-center">
-                                    <span class="text-[8.5px] text-slate-400 uppercase block">Escrow Retenido</span>
-                                    <span class="text-xs font-mono font-bold text-amber-400">${formattedEscrowAmt} (${totalEscrows})</span>
-                                </div>
-                                <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 text-center">
-                                    <span class="text-[8.5px] text-slate-400 uppercase block">Modo Simulación</span>
-                                    <span class="text-xs font-extrabold text-bajio-300 uppercase">${activeScenario}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p class="text-[11px] text-slate-300 leading-relaxed">
-                            💡 <strong>Interpretación:</strong> La liquidez de tu empresa es estable. Actualmente tienes un total de <strong>${totalEscrows} retenes</strong> en Escrow con un valor acumulado de <strong class="text-amber-300">${formattedEscrowAmt} MXN</strong>.
+                        <p class="font-extrabold text-white text-xs">¡Hola! Qué gusto saludarte.</p>
+                        <p class="text-[11px] leading-relaxed text-slate-300">
+                            Estoy al tanto de las operaciones en tiempo real de <strong class="text-white">NexusTech Solutions</strong>. Actualmente tu saldo es de <span class="font-bold font-mono text-emerald-400">${formattedBalance} MXN</span> y el escenario activo del sistema es <strong class="text-bajio-300">${scenarioDesc}</strong>.
                         </p>
-
-                        <div class="pt-1.5 border-t border-slate-800 text-[10px] text-bajio-300 flex items-center justify-between">
-                            <span>¿Deseas profundizar en alguna transferencia?</span>
-                            <button onclick="triggerQuickPrompt('diag')" class="font-bold underline text-white hover:text-bajio-300">Analizar Datos</button>
-                        </div>
+                        <p class="text-[11px] text-slate-300">
+                            ¿En qué te puedo asesorar hoy? Puedo analizar tus movimientos, explicarte las reglas de intercepción, o generar un reporte visual de riesgo.
+                        </p>
                     </div>
                 `;
             }
 
-            // SCENARIO 2: Data Diagnosis / Interpretation
-            if (q.includes('analiz') || q.includes('estado') || q.includes('datos') || q.includes('saldo') || q.includes('situacion')) {
-                return `
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between border-b border-slate-700/60 pb-1.5">
-                            <span class="font-extrabold text-white text-xs flex items-center gap-1.5">
-                                <i class="fa-solid fa-microchip text-emerald-400"></i> Análisis Heurístico en Tiempo Real
-                            </span>
-                            <span class="text-[9px] bg-emerald-500/20 text-emerald-400 font-mono px-1.5 py-0.5 rounded border border-emerald-500/30">OK</span>
-                        </div>
+            // 2. DIAGNOSTIC / STATE ANALYSIS
+            if (cleanQuery.includes("diag") || cleanQuery.includes("analizar estado") || cleanQuery.includes("analisis") || cleanQuery.includes("estado actual") || cleanQuery.includes("resumen de cuenta")) {
+                let riskAssessment = "Óptimo y seguro";
+                let riskBadgeClass = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
+                
+                if (escrowCount > 0 || activeScenario !== 'normal') {
+                    riskAssessment = "Precaución Requerida";
+                    riskBadgeClass = "bg-amber-500/20 text-amber-400 border-amber-500/30";
+                }
 
+                return `
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between border-b border-slate-700/80 pb-2">
+                            <span class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                                <i class="fa-solid fa-microchip text-bajio-300"></i> Diagnóstico en Tiempo Real
+                            </span>
+                            <span class="text-[9px] px-2 py-0.5 rounded-full font-bold border ${riskBadgeClass}">
+                                ${riskAssessment}
+                            </span>
+                        </div>
                         <ul class="space-y-1.5 text-[11px] text-slate-300">
-                            <li class="flex items-start gap-1.5">
-                                <i class="fa-solid fa-wallet text-emerald-400 mt-0.5"></i>
-                                <span><strong>Saldo Activo:</strong> Tu saldo de Nessie API registra <strong class="text-white font-mono">${formattedBalance} MXN</strong>.</span>
+                            <li class="flex justify-between">
+                                <span class="text-slate-400">Saldo Liquido Disponible:</span>
+                                <strong class="font-mono text-emerald-400">${formattedBalance} MXN</strong>
                             </li>
-                            <li class="flex items-start gap-1.5">
-                                <i class="fa-solid fa-sliders text-indigo-400 mt-0.5"></i>
-                                <span><strong>Límite sin Escrow:</strong> Configurado en <strong class="text-indigo-300 font-mono">$${appRules.maxDirectAmount.toLocaleString('es-MX')} MXN</strong>. Operaciones mayores detonarán intercepción.</span>
+                            <li class="flex justify-between">
+                                <span class="text-slate-400">Retenciones Bóveda Escrow:</span>
+                                <strong class="font-mono text-amber-400">${escrowCount} oper. (${formattedEscrowTotal})</strong>
                             </li>
-                            <li class="flex items-start gap-1.5">
-                                <i class="fa-solid fa-clock text-amber-400 mt-0.5"></i>
-                                <span><strong>Restricción Nocturna:</strong> ${appRules.nightBlockEnabled ? `Activa de <strong class="text-amber-300 font-mono">${appRules.nightStart} a ${appRules.nightEnd}</strong>.` : 'Desactivada.'}</span>
+                            <li class="flex justify-between">
+                                <span class="text-slate-400">Límite Directo Configurado:</span>
+                                <strong class="font-mono text-slate-200">$${appRules.maxDirectAmount.toLocaleString('es-MX')} MXN</strong>
                             </li>
-                            <li class="flex items-start gap-1.5">
-                                <i class="fa-solid fa-receipt text-bajio-300 mt-0.5"></i>
-                                <span><strong>Último Movimiento:</strong> ${recentLog.payee} por <strong class="font-mono text-white">${recentLog.amount}</strong> (${recentLog.operator}).</span>
+                            <li class="flex justify-between">
+                                <span class="text-slate-400">Horario Restringido Configurado:</span>
+                                <strong class="font-mono text-indigo-300">${appRules.nightStart} - ${appRules.nightEnd} HRS</strong>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-slate-400">Escenario de Prueba Activo:</span>
+                                <strong class="text-bajio-300">${activeScenario.toUpperCase()}</strong>
                             </li>
                         </ul>
-
-                        <div class="bg-bajio-950/80 p-2 rounded-xl border border-bajio-700/50 text-[10px] text-bajio-200">
-                            <strong>Diagnóstico Copiloto:</strong> Todo opera con normalidad. No se detectan patrones de vulnerabilidad activos en la sesión.
-                        </div>
-
-                        <div class="pt-1 flex justify-end">
-                            <button onclick="triggerQuickPrompt('visual')" class="text-[10px] bg-white/10 hover:bg-white/20 px-2 py-1 rounded-lg text-white font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-chart-bar text-amber-400"></i> Ver en Gráfica
-                            </button>
-                        </div>
+                        <p class="text-[10px] text-slate-400 pt-1 border-t border-slate-700/60 leading-normal">
+                            <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i><strong>Recomendación Copiloto:</strong> ${escrowCount > 0 ? "Tienes operaciones en retención preventiva. Puedes revisarlas y liberarlas desde la bóveda Escrow." : "Tus parámetros operativos están equilibrados. No hay anomalías graves detectadas en este instante."}
+                        </p>
                     </div>
                 `;
             }
 
-            // SCENARIO 3: Escrow Detailed Explanation & Complex Topics
-            if (q.includes('escrow') || q.includes('retencion') || q.includes('boveda') || q.includes('retenid')) {
+            // 3. VISUAL / GRAPHIC REPRESENTATION
+            if (cleanQuery.includes("visual") || cleanQuery.includes("grafica") || cleanQuery.includes("grafico") || cleanQuery.includes("tarjeta") || cleanQuery.includes("resumen visual")) {
+                return `
+                    <div class="space-y-2.5">
+                        <p class="font-bold text-white text-xs flex items-center justify-between">
+                            <span><i class="fa-solid fa-chart-line text-amber-400 mr-1"></i> Resumen Visual Operativo</span>
+                            <span class="text-[9px] text-slate-400 font-mono">NexusTech Solutions</span>
+                        </p>
+                        <!-- Visual Widget Card inside Chat -->
+                        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-700/80 space-y-2.5">
+                            <div>
+                                <div class="flex justify-between text-[10px] text-slate-300 mb-1 font-semibold">
+                                    <span>Saldo Disponible vs Escrow</span>
+                                    <span class="font-mono text-emerald-400">${formattedBalance}</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden flex">
+                                    <div class="bg-emerald-400 h-full" style="width: 85%;"></div>
+                                    <div class="bg-amber-400 h-full" style="width: 15%;"></div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-[9.5px]">
+                                <div class="bg-slate-900 p-2 rounded-xl border border-slate-800 text-center">
+                                    <span class="text-slate-400 block">Movimientos Bitácora</span>
+                                    <span class="font-black font-mono text-white text-xs mt-0.5 block">${auditLogs.length} reg.</span>
+                                </div>
+                                <div class="bg-slate-900 p-2 rounded-xl border border-slate-800 text-center">
+                                    <span class="text-slate-400 block">Filtro Bot</span>
+                                    <span class="font-black text-emerald-400 text-xs mt-0.5 block">${appRules.botFilterEnabled ? 'Activo' : 'Inactivo'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[10.5px] text-slate-300 leading-tight">
+                            Esta tarjeta refleja dinámicamente tus fondos de Nessie API y el desempeño de la capa de seguridad.
+                        </p>
+                    </div>
+                `;
+            }
+
+            // 4. ESCROW & RETENCIONES
+            if (cleanQuery.includes("escrow") || cleanQuery.includes("retencion") || cleanQuery.includes("boveda") || cleanQuery.includes("retenido")) {
+                let escrowDetails = "";
+                if (escrowCount === 0) {
+                    escrowDetails = "<p class='text-[11px] text-slate-300'>En este momento <strong>no tienes transferencias retenidas</strong> en la bóveda de Escrow.</p>";
+                } else {
+                    escrowDetails = `
+                        <div class="space-y-1.5 text-[10.5px] text-slate-300">
+                            <p class="font-bold text-amber-300">Tienes ${escrowCount} operación(es) retenida(s):</p>
+                            <ul class="list-disc list-inside space-y-1 bg-slate-950 p-2 rounded-xl border border-slate-800">
+                                ${escrowHoldList.map(item => `
+                                    <li class="text-slate-200">
+                                        <strong class="text-white">${item.payee}</strong>: <span class="font-mono text-amber-400 font-bold">${item.amountStr}</span> (Operador: ${item.operator})
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
                 return `
                     <div class="space-y-2">
-                        <div class="flex items-center gap-1.5 border-b border-slate-700/60 pb-1.5">
-                            <i class="fa-solid fa-vault text-amber-400 text-sm"></i>
-                            <h4 class="font-extrabold text-white text-xs">Explicación Técnica: Bóveda de Escrow Preventivo</h4>
-                        </div>
-
-                        <p class="text-[11px] text-slate-300 leading-relaxed">
-                            El <strong>Escrow Inteligente</strong> de SentinelGuard actúa como un "amortiguador de seguridad" de 24 horas antes de autorizar la dispersión SPEI hacia bancos de destino.
+                        <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-vault text-amber-400"></i> Bóveda de Escrow Preventivo
                         </p>
-
-                        <!-- Step visual explanation -->
-                        <div class="bg-slate-950 p-2 rounded-xl border border-slate-800 space-y-1.5 text-[10px]">
-                            <div class="flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-[9px]">1</span>
-                                <span class="text-slate-300"><strong>Detección:</strong> La IA asigna un score > 50 pts por anomalía de horario, monto o giro.</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-[9px]">2</span>
-                                <span class="text-slate-300"><strong>Aislamiento:</strong> Los fondos se transfieren a la bóveda segura sin salir del banco.</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-[9px]">3</span>
-                                <span class="text-slate-300"><strong>Liberación/Rechazo:</strong> El tesorero autoriza manualmente o vence la ventana de verificación.</span>
-                            </div>
-                        </div>
-
-                        <p class="text-[10.5px] text-amber-300 font-semibold">
-                            Actualmente tienes <strong>${totalEscrows} operación(es)</strong> retenidas en la bóveda.
+                        <p class="text-[11px] leading-relaxed text-slate-300">
+                            El módulo de <strong>Escrow</strong> actúa como un amortiguador de seguridad inteligente. Cuando una transacción excede los límites configurados o proviene de patrones anómalos, SentinelGuard no rechaza de inmediato la transferencia: la congela en custodia preventiva durante 24 horas.
                         </p>
-
-                        <div class="pt-1 flex gap-2">
-                            <button onclick="closeModal('modal-ai-chat'); openEscrowManagerModal();" class="text-[10px] w-full py-1.5 bg-amber-600/80 hover:bg-amber-600 text-white font-bold rounded-xl text-center transition-all">
-                                Ir a Bóveda Escrow
-                            </button>
-                        </div>
+                        ${escrowDetails}
+                        <p class="text-[10.5px] text-slate-400">
+                            Puedes liberar manualmente cualquier fondo en custodia desde el botón <strong class="text-amber-300 cursor-pointer" onclick="openEscrowManagerModal()">Escrow</strong> en la barra principal.
+                        </p>
                     </div>
                 `;
             }
 
-            // SCENARIO 4: Heuristic SPEI & Rules Explanation
-            if (q.includes('heuristi') || q.includes('regla') || q.includes('score') || q.includes('algoritm') || q.includes('extension')) {
+            // 5. REGLAS, HEURÍSTICA Y LÍMITES
+            if (cleanQuery.includes("regla") || cleanQuery.includes("limite") || cleanQuery.includes("heuristica") || cleanQuery.includes("nocturno") || cleanQuery.includes("bot")) {
                 return `
                     <div class="space-y-2">
-                        <div class="flex items-center gap-1.5 border-b border-slate-700/60 pb-1.5">
-                            <i class="fa-solid fa-sliders text-indigo-400 text-sm"></i>
-                            <h4 class="font-extrabold text-white text-xs">Heurística & Motor de Reglas Verifika</h4>
-                        </div>
-
-                        <p class="text-[11px] text-slate-300 leading-relaxed">
-                            SentinelGuard no utiliza reglas estáticas rígidas; aplica un <strong>Score de Riesgo Heurístico (0 a 100 pts)</strong> acumulativo para cada SPEI saliente:
+                        <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-sliders text-bajio-300"></i> Heurística & Reglas de Empresa
                         </p>
-
-                        <div class="bg-slate-950 p-2 rounded-xl border border-slate-800 space-y-1 text-[9.5px] font-mono">
-                            <div class="flex justify-between text-slate-300">
-                                <span>• Giro Crypto / Offshore:</span>
-                                <span class="text-bajio-red font-bold">+60 pts</span>
-                            </div>
-                            <div class="flex justify-between text-slate-300">
-                                <span>• Exceder Monto Máximo ($${appRules.maxDirectAmount.toLocaleString('es-MX')}):</span>
-                                <span class="text-bajio-red font-bold">+50 pts</span>
-                            </div>
-                            <div class="flex justify-between text-slate-300">
-                                <span>• Ráfaga Bot (>2 tx/min):</span>
-                                <span class="text-amber-400 font-bold">+50 pts</span>
-                            </div>
-                            <div class="flex justify-between text-slate-300">
-                                <span>• Horario Restringido (${appRules.nightStart}-${appRules.nightEnd}):</span>
-                                <span class="text-amber-400 font-bold">+45 pts</span>
-                            </div>
-                        </div>
-
-                        <p class="text-[10.5px] text-slate-300">
-                            Cualquier transacción con un acumulado <strong class="text-bajio-red">≥ 50 pts</strong> activa la pantalla de intercepción inmediata con 2FA o Escrow.
+                        <p class="text-[11px] leading-relaxed text-slate-300">
+                            SentinelGuard evalúa cada envío SPEI asignando un <strong>Score de Riesgo (0 a 100 pts)</strong> según tres variables principales:
                         </p>
-
-                        <div class="pt-1 flex gap-2">
-                            <button onclick="closeModal('modal-ai-chat'); openRulesModal();" class="text-[10px] w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-center transition-all">
-                                Configurar Reglas de Empresa
-                            </button>
+                        <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1.5 text-[10.5px]">
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span>1. Límite de Monto Directo:</span>
+                                <strong class="font-mono text-emerald-400">$${appRules.maxDirectAmount.toLocaleString('es-MX')} MXN</strong>
+                            </div>
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span>2. Ventana de Restricción Horaria:</span>
+                                <strong class="font-mono text-indigo-300">${appRules.nightStart} a ${appRules.nightEnd} HRS</strong>
+                            </div>
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span>3. Filtro Antiráfaga Bot:</span>
+                                <strong class="font-mono text-emerald-400">${appRules.botFilterEnabled ? 'Activado (>2 ops/min)' : 'Desactivado'}</strong>
+                            </div>
                         </div>
+                        <p class="text-[10.5px] text-slate-400">
+                            Puedes reconfigurar estos parámetros en cualquier momento abriendo el panel de <strong class="text-bajio-300 cursor-pointer" onclick="openRulesModal()">Reglas</strong>.
+                        </p>
                     </div>
                 `;
             }
 
-            // DEFAULT SCENARIO: Conversational & Q&A Encouragement
+            // 6. SALDO, TARJETA, FONDOS
+            if (cleanQuery.includes("saldo") || cleanQuery.includes("dinero") || cleanQuery.includes("cuanto tengo") || cleanQuery.includes("tarjeta") || cleanQuery.includes("fondos")) {
+                return `
+                    <div class="space-y-2">
+                        <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-wallet text-emerald-400"></i> Estado de Fondos & Tarjeta
+                        </p>
+                        <p class="text-[11px] text-slate-300">
+                            Tu saldo actual disponible en la cuenta empresarial es de <strong class="font-mono text-emerald-400 text-sm">${formattedBalance} MXN</strong>.
+                        </p>
+                        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[10.5px] text-slate-300 space-y-1">
+                            <p>● <strong>Tarjeta Débito Pyme:</strong> 4152 •••• •••• 9841 (Activa con CVV dinámico)</p>
+                            <p>● <strong>Retenciones en Escrow:</strong> ${escrowCount} pendientes (${formattedEscrowTotal})</p>
+                        </div>
+                        <p class="text-[10.5px] text-slate-400">
+                            Para simular un abono instantáneo vía Nessie API, utiliza el botón <em>"+ Ingresar Fondos"</em> en el panel superior.
+                        </p>
+                    </div>
+                `;
+            }
+
+            // 7. SEGURIDAD, BIOMETRÍA Y 2FA
+            if (cleanQuery.includes("seguridad") || cleanQuery.includes("biometria") || cleanQuery.includes("face id") || cleanQuery.includes("token") || cleanQuery.includes("2fa")) {
+                return `
+                    <div class="space-y-2">
+                        <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-shield-halved text-emerald-400"></i> Capa de Autenticación Multifactores
+                        </p>
+                        <p class="text-[11px] leading-relaxed text-slate-300">
+                            Cuando una operación genera una alerta intermedia de riesgo (Score &ge; 50 pts), SentinelGuard exige una verificación secundaria. Puedes autenticar con:
+                        </p>
+                        <ul class="list-disc list-inside space-y-1 text-[10.5px] text-slate-300 bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                            <li><strong class="text-emerald-400">Face ID / Biometría Facual:</strong> Validación biométrica directa de alta precisión.</li>
+                            <li><strong class="text-bajio-300">Token Dinámico de 4 Caracteres:</strong> Clave temporal de un solo uso.</li>
+                        </ul>
+                        <p class="text-[10.5px] text-slate-400">
+                            Ambos métodos garantizan que solo los operadores autorizados puedan liberar transferencias bajo sospecha.
+                        </p>
+                    </div>
+                `;
+            }
+
+            // 8. GENERAL FINANCIAL & CONVERSATIONAL AGENCY (Open Fallback with High Utility)
             return `
                 <div class="space-y-2">
-                    <p class="text-[11.5px] text-slate-200 leading-relaxed">
-                        Entendido. He procesado tu consulta sobre "<strong class="text-white">${escapeHTML(query)}</strong>".
+                    <p class="font-extrabold text-white text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-brain text-bajio-300"></i> Análisis Copiloto
                     </p>
-                    <p class="text-[11px] text-slate-300 leading-relaxed">
-                        Como tu copiloto especializado de BanBajío, estoy listo para guiarte en el uso de la extensión, analizar la seguridad de tus transferencias SPEI o crear tarjetas explicativas.
+                    <p class="text-[11px] leading-relaxed text-slate-300">
+                        Entiendo tu consulta sobre <em>"${escapeHTML(query)}"</em>. Como Copiloto de BanBajío Empresarial, analizo cada consulta conectando tus métricas operativas reales con las mejores prácticas financieras.
                     </p>
-
-                    <div class="bg-slate-950 p-2 rounded-xl border border-slate-800 text-[10px] space-y-1">
-                        <span class="font-bold text-bajio-300 block">💡 Sugerencias de preguntas:</span>
-                        <ul class="list-disc list-inside text-slate-400 space-y-0.5">
-                            <li>"¿Cuál es mi saldo y cuántas retenciones tengo?"</li>
-                            <li>"Genera un resumen visual del riesgo"</li>
-                            <li>"¿Por qué se bloquea una ráfaga de bots?"</li>
-                        </ul>
+                    <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-[10.5px] text-slate-300 space-y-1">
+                        <p>● <strong>Saldo Actual:</strong> <span class="font-mono font-bold text-emerald-400">${formattedBalance} MXN</span></p>
+                        <p>● <strong>Nivel de Protección:</strong> SentinelGuard Activo (${activeScenario.toUpperCase()})</p>
                     </div>
-
-                    <div class="pt-1 flex gap-1.5 flex-wrap">
-                        <button onclick="triggerQuickPrompt('diag')" class="text-[9.5px] px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700">
-                            📊 Analizar Datos
-                        </button>
-                        <button onclick="triggerQuickPrompt('visual')" class="text-[9.5px] px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold border border-slate-700">
-                            🎨 Ver Gráfica
-                        </button>
-                        <button onclick="triggerQuickPrompt('heuristic')" class="text-[9.5px] px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-bajio-300 font-bold border border-slate-700">
-                            🛡️ Ver Escrow
-                        </button>
-                    </div>
+                    <p class="text-[10.5px] text-slate-300">
+                        Si requieres una acción específica, intenta preguntarme por:
+                        <br>• <strong>"Analizar estado"</strong> para un diagnóstico financiero.
+                        <br>• <strong>"Resumen visual"</strong> para ver tus datos en tarjetas gráficas.
+                        <br>• <strong>"Explicar Escrow"</strong> para conocer la bóveda de protección.
+                    </p>
                 </div>
             `;
         }

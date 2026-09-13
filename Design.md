@@ -1,32 +1,44 @@
-System and Logic Overview
+# System and Logic Overview
 
 Our system works as a protective layer built right into the banking web page (like BanBajío) that checks money transfers before they leave the account. It acts like a digital security guard standing between the user and the bank's transaction systems.
 
-The system is made up of four simple parts:
+## The system is made up of four simple parts:
 
 Information Capture Tool: Reads the details of a transfer (who is sending it, who receives it, how much, and what time) the moment the "Send" button is clicked.
 
 Risk Checker: Analyzes those details instantly to calculate how safe or dangerous the transfer looks.
+
 Verification Security Guard: Pauses suspicious transfers to ask for extra safety checks (like a security code or Face ID) or puts the money on hold.
+
 Activity Log: Keeps a complete record of every transfer attempt, security decision, and user action for safety records.
+
 Chatbot: A specific chatbot that takes track your finantial movements in a more user friendly way using the Gemini API.
 
-How the Risk System Works
+# How the Risk System Works
 
-Every single transfer starts with a basic safety score of 10 out of 100. The system then checks five redflag rules and adds risk points if a rule is triggered:
+Every single transfer starts with a basic safety score of 10 out of 100. 
+
+The system then checks five redflag rules and adds risk points if a rule is triggered:
+
 Large Amount: The transfer is above normal account limits.
+
 High-Risk Recipient: Sending money to risky destinations like cryptocurrency exchanges or offshore accounts.
+
 Odd Hours: Transfers made at certain odd hours.
+
 Rapid Transfers: Sending multiple transfers within a few seconds to prevent automated bots.
 
-What Happens Next?
+# What Happens Next?
 
 Based on the final score (0 to 100), the system takes one of three actions:
+
 Low Risk (Under 50): Everything looks good. The transfer goes through immediately, and the activity is logged.
+
 Medium Risk (50 to 75): The transfer is paused. The user must enter a 4 digit code or scan their biomimetics to confirm it's really them.
+
 High Risk (Over 75): The transfer is completely stopped. The money is placed in a safe 24 hour temporary hold (escrow) until a manager approves it, extra signatures are provided, or the request is canceled.
 
-What did we use?
+# What did we use?
 
 We used two main APIs: Gemini’s API and Capital One’s "Nessie is real" API, which act as the base for the interactive model and the database from which our extension pulls info for the simulation.
 

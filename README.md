@@ -50,13 +50,13 @@ Approximately 45% of SMEs in Mexico suffer financial fraud due to overbilling an
 VerifiKa creates a seamless interaction between commercial banks and SME users across five critical stages:
 
 
-| Stage | 1. Acquisition & Contracting | 2. Onboarding & Config | 3. Daily Operations | 4. Detection & Escrow | 5. Analysis & Monetization |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Bank Action** | Integrates VerifiKa API into its corporate banking platform (*White-Label*). | Deploys *Security Plus* module to SME digital banking accounts. | Passively monitors SPEI transactions without disrupting core rails. | Intercepts high-risk transfers ($\text{Score} \ge 50$) via **Ghost Escrow Vault**. | Collects recurring subscription revenue ($15/mo net margin per SME). |
-| **SME Action** | Activates *VerifiKa Shield* directly within the bank’s mobile app. | Sets up team roles, spending rules, and registers Face ID biometrics. | Executes daily SPEI transfers, vendor payouts, and routine payroll. | Receives real-time risk alert; authorizes flagged transfer with Face ID. | Reviews financial security reports and interacts with **Gemini AI Copilot**. |
-| **Touchpoint** | Portal / Executive Account Mgr. | App Onboarding / Biometric Setup | Mobile Banking App (Native) | Interactive Push Notification / Vault | Financial Health Dashboard |
-| **Pain Point Solved** | Eliminates 18-month internal builds and heavy infrastructure costs. | Replaces complex security setups with a 2-minute guided onboarding. | Eliminates transaction delays and false-positive account blocks. | Resolves suspicious activity automatically without call center friction. | Turns cybersecurity into a profit center for the bank while protecting SME liquidity. |
-| **Tech / AI Engine** | RESTful API & Webhook Handshake | Initial Gemini baseline model training on historical rules | Real-time heuristic scoring (amounts, hours, patterns) | Dynamic Risk Engine + Device-native Biometric API | Adaptive memory logging & predictive fraud analytics |
+| Stage | Bank Action | SME Action | Pain Point Solved | Tech / AI Engine |
+| :--- | :--- | :--- | :--- | :--- |
+| **1. Acquisition** | Integrates White-Label API. | Activates Shield in app. | Eliminates 18-mo dev cycle. | REST API & Webhooks. |
+| **2. Onboarding** | Deploys Security Plus. | Configures roles & Face ID. | 2-minute digital setup. | Gemini baseline model. |
+| **3. Operations** | Monitors SPEI passively. | Executes daily payments. | Zero false-positive blocks. | Real-time heuristic scoring. |
+| **4. Detection** | Ghost Escrow (Score ≥ 50). | Authorizes via Face ID. | 100% automated resolution. | Dynamic Risk Engine & Biometrics. |
+| **5. Monetization**| Collects $15/mo net margin. | Reviews AI security reports.| Turns security into profit. | Adaptive fraud analytics. |
 
 
 ## Key Journey Highlights
@@ -77,3 +77,30 @@ VerifiKa extends native commercial banking applications through four core integr
 | ** Biometric Auth** | Device-native Face ID & dynamic 4-pin security. | Instant approval for flagged transfers. | Eliminates identity theft and credential leaks. |
 | ** Gemini AI Engine** | Self-learning behavioral model tracking company budgets. | Audits operational leaks in real time. | Drastically reduces false-positive alerts. |
 | ** Ghost Escrow Vault** | Real-time Risk Score (0-100) & 24h retention vault. | Immediate control over held funds. | 100% automated resolution; zero call-center burden. |
+
+
+```mermaid
+graph TD
+    %% Node Styles
+    classDef bank fill:#1e3a8a,stroke:#3b82f6,stroke-width:2px,color:#fff;
+    classDef engine fill:#312e81,stroke:#6366f1,stroke-width:2px,color:#fff;
+    classDef alert fill:#991b1b,stroke:#ef4444,stroke-width:2px,color:#fff;
+    classDef success fill:#065f46,stroke:#10b981,stroke-width:2px,color:#fff;
+
+    %% Main Flow
+    A["📱 Banking App<br/>(SME Dashboard)"]:::bank --> B["SPEI Transfer"]:::bank
+    B --> C["VerifiKa AI Engine<br/>(Risk Analysis)"]:::engine
+    C --> D{"Risk Score"}:::engine
+
+    %% Decision Branches
+    D -- "Score < 50<br/>(Normal)" --> E["Successful Transaction"]:::success
+    D -- "Score ≥ 50<br/>(Risk)" --> F["Ghost Escrow Vault<br/>(24h Pause)"]:::alert
+
+    %% Authentication Process
+    F --> G["Push Notification"]:::alert
+    G --> H["Face ID / PIN"]:::bank
+    H --> I{"SME Decision"}:::bank
+
+    %% Final Outcome
+    I -- "Approve" --> E
+    I -- "Cancel" --> J["Funds Protected"]:::success
